@@ -3,6 +3,7 @@ import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@mater
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import { login } from '../services/loginAPI';
 
 const Login = ({ handleChange }) => {
 
@@ -18,12 +19,12 @@ const Login = ({ handleChange }) => {
         password: Yup.string().required("Required")
     })
     const onSubmit = (values, props) => {
+       login(values);
         console.log(values)
         setTimeout(() => {
             props.resetForm()
             props.setSubmitting(false)
         }, 2000)
-
     }
     return (
         <Grid>

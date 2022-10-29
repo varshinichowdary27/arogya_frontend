@@ -23,7 +23,8 @@ const Signup = () => {
         phoneNumber: '',
         password: '',
         confirmPassword: '',
-        termsAndConditions: false
+        termsAndConditions: false,
+        userType: ''
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
