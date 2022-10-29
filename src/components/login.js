@@ -1,8 +1,6 @@
 import React from 'react'
 import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
@@ -13,8 +11,7 @@ const Login = ({ handleChange }) => {
     const btnstyle = { margin: '8px 0' }
     const initialValues = {
         username: '',
-        password: '',
-        remember: false
+        password: ''
     }
     const validationSchema = Yup.object().shape({
         username: Yup.string().email('please enter valid email').required("Required"),
@@ -30,7 +27,7 @@ const Login = ({ handleChange }) => {
     }
     return (
         <Grid>
-            <Paper style={paperStyle}>
+            <Paper style={paperStyle} elevation={0}>
                 <Grid align='center'>
                     <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar>
                     <h2>Sign In</h2>
@@ -45,30 +42,16 @@ const Login = ({ handleChange }) => {
                             <Field as={TextField} label='Password' name="password"
                                 placeholder='Enter password' type='password' fullWidth required
                                 helperText={<ErrorMessage name="password" />} />
-                            <Field as={FormControlLabel}
-                                name='remember'
-                                control={
-                                    <Checkbox
-                                        color="primary"
-                                    />
-                                }
-                                label="Remember me"
-                            />
                             <Button type='submit' color='primary' variant="contained" disabled={props.isSubmitting}
                                 style={btnstyle} fullWidth>{props.isSubmitting ? "Loading" : "Sign in"}</Button>
 
                         </Form>
                     )}
                 </Formik>
-                <Typography >
-                    <Link href="#" >
-                        Forgot password ?
-                </Link>
-                </Typography>
-                <Typography > Do you have an account ?
-                     <Link href="#" onClick={() => handleChange("event", 1)} >
+                <Typography >`Don't have an account ?
+                    <Link href="#" onClick={() => handleChange("event", 1)} >
                         Sign Up
-                </Link>
+                    </Link>
                 </Typography>
             </Paper>
         </Grid>
