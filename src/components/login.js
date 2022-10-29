@@ -5,7 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { login } from '../services/loginAPI';
 
-const Login = ({ handleChange }) => {
+const Login = ({ handleChange, loginCallBack}) => {
 
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -19,12 +19,11 @@ const Login = ({ handleChange }) => {
         password: Yup.string().required("Required")
     })
     const onSubmit = (values, props) => {
-       login(values);
-        console.log(values)
-        setTimeout(() => {
-            props.resetForm()
-            props.setSubmitting(false)
-        }, 2000)
+        login(values);
+        loginCallBack();
+        console.log(values);
+        props.resetForm()
+        props.setSubmitting(false)
     }
     return (
         <Grid>

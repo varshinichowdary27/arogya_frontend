@@ -9,6 +9,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
+import { logOut } from '../services/loginAPI';
 
 const drawerWidth = 240;
 
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SideMenu() {
+function SideMenu({loginCallBack}) {
     const classes = useStyles();
   
     return (
@@ -51,10 +52,16 @@ function SideMenu() {
         <List>
           {['Profile', 'Sign Out'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <AccountCircle /> : <ExitToApp />}
+              <div style= {{display: 'flex'}} onClick={() => {
+                  if (index === 1 ) {
+                    logOut();
+                    loginCallBack();
+                  }}}>
+              <ListItemIcon >
+                {index % 2 === 0 ? <AccountCircle /> : <ExitToApp/>}
               </ListItemIcon>
               <ListItemText primary={text} />
+              </div>
             </ListItem>
           ))}
         </List>

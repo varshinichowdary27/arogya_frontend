@@ -11,7 +11,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
 import axios from 'axios';
-const Signup = () => {
+import { signUp } from '../services/loginAPI';
+const Signup = ({loginCallBack}) => {
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -29,19 +30,13 @@ const Signup = () => {
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
         email: Yup.string().email("Enter valid email").required("Required"),
-        gender: Yup.string().oneOf(["male", "female"], "Required").required("Required"),
         phoneNumber: Yup.number().typeError("Enter valid Phone Number").required('Required'),
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required"),
-        termsAndConditions: Yup.string().oneOf(["true"], "Accept terms & conditions"),
-        userType: Yup.string().required()
+        termsAndConditions: Yup.string().oneOf(["true"], "Accept terms & conditions")
     })
     const onSubmit = (values, props) => {
-        axios.get('/longRequest', {
-            timeout: 5000
-          }).then(
-              a => console.log("adadasd")
-          );
+        signUp(values, 'patient');
         console.log(values)
         console.log(props)
         setTimeout(() => {
@@ -63,24 +58,10 @@ const Signup = () => {
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {(props) => (
                         <Form>
-                            <FormControl fullWidth style={marginTop}>
-                                <FormLabel required style={{textAlign: "left"}}>Account Type</FormLabel>
-                                <RadioGroup row aria-label="gender" name="userType" style={{ display: 'initial' }}>
-                                    <FormControlLabel value="patient" control={<Radio />} label="Patient" />
-                                    <FormControlLabel value="doctor" control={<Radio />} label="Doctor" />
-                                </RadioGroup>
-                            </FormControl>
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
                             <Field required as={TextField} fullWidth name="email" label='Email'
                                 placeholder="Enter your email" helperText={<ErrorMessage name="email" />} />
-                            <FormControl fullWidth required component="fieldset" style={marginTop}>
-                                <FormLabel required style={{textAlign: "left"}}>Gender</FormLabel>
-                                <RadioGroup row aria-label="gender" name="gender" style={{ display: 'initial' }}>
-                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                </RadioGroup>
-                            </FormControl>
                             <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
                             <Field as={TextField} required fullWidth name="phoneNumber" label='Phone Number'
                                 placeholder="Enter your phone number" helperText={<ErrorMessage name="phoneNumber" />} />

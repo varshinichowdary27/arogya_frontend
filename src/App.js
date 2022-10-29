@@ -1,14 +1,18 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Home from './components/Home';
 import { BASE_ULR, URLS } from './config/constant';
-import SignInOutContainer from './containers';
-function App() {
+import SignInOutContainer from './containers/signInOutContainer';
+
+
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   axios.defaults.baseURL = BASE_ULR
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 
   axios.interceptors.request.use(function (config) {
-    if (config.url !== URLS.login) {
+    if (config.url !== URLS.login && sessionStorage.getItem("AUTH_TOKEN") !== null) {
       config.headers.common['Authorization'] = sessionStorage.getItem("AUTH_TOKEN");
     }
     return config;
@@ -18,7 +22,13 @@ function App() {
   });
   return (
     <div className="App">
-     <SignInOutContainer/>
+     {loggedIn ? <Home loginCallBack={ () => {
+         setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
+       }}/> : 
+       <SignInOutContainer loginCallBack={ () => {
+         setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
+       }}></SignInOutContainer> 
+      }
     </div>
   );
 }
