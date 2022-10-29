@@ -71,11 +71,6 @@ const Signup = ({loginCallBack}) => {
                             <Field as={TextField} required fullWidth name="confirmPassword" type="password"
                                 label='Confirm Password' placeholder="Confirm your password"
                                 helperText={<ErrorMessage name="confirmPassword" />} />
-                            <FormControlLabel
-                                control={<Field as={Checkbox} name="termsAndConditions" />}
-                                label="I accept the terms and conditions."
-                            />
-                            <FormHelperText><ErrorMessage name="termsAndConditions" /></FormHelperText>
                             <Button type='submit' variant='contained' disabled={props.isSubmitting}
                                 color='primary'>{props.isSubmitting ? "Loading" : "Sign up"}</Button>
 

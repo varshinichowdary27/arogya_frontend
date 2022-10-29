@@ -9,7 +9,7 @@ export const login = ({username, password, userType}) => axios.get(URLS.login, {
   );
 
 export const signUp = ({userData}, userType) => {
-  const register_url = '';
+  let register_url = '';
   if(userType === 'patient') {
     register_url = 'register_patient';
   }
