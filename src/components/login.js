@@ -19,11 +19,18 @@ const Login = ({ handleChange, loginCallBack}) => {
         password: Yup.string().required("Required")
     })
     const onSubmit = (values, props) => {
-        login(values);
-        loginCallBack();
-        console.log(values);
-        props.resetForm()
-        props.setSubmitting(false)
+        login({...values, userType: 'PATIENT'})
+            .then(data => {
+                console.log(data);
+                if(data.logged) {
+                    loginCallBack();
+                    console.log(values);
+                    props.resetForm()
+                }
+            },
+            () => {
+            return "Unable to Login";
+            }).finally(() =>  props.setSubmitting(false));
     }
     return (
         <Grid>

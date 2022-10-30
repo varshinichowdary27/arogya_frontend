@@ -32,8 +32,7 @@ const Signup = ({loginCallBack}) => {
         email: Yup.string().email("Enter valid email").required("Required"),
         phoneNumber: Yup.number().typeError("Enter valid Phone Number").required('Required'),
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required"),
-        termsAndConditions: Yup.string().oneOf(["true"], "Accept terms & conditions")
+        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required")
     })
     const onSubmit = (values, props) => {
         signUp(values, 'patient');
