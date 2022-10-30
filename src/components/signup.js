@@ -7,6 +7,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
@@ -15,6 +18,7 @@ import { signUp } from '../services/loginAPI';
 
 const Signup = ({loginCallBack}) => {
     const [errMsg, setErrMsg] = useState("");
+    const [accountType, setAccountType] = useState(10);
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -35,8 +39,12 @@ const Signup = ({loginCallBack}) => {
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required")
     })
+    const handleChange = (event) =>{
+setAccountType(event.target.value);
+    }
     const onSubmit = (values, props) => {
         //TODO send user type and other information
+        console.log("entered");
         signUp({...values, age: 18, last_name: values.name, userType: 'counselor', 
         registration_number: "afads"
         ,gender: "male"
@@ -77,6 +85,27 @@ const Signup = ({loginCallBack}) => {
                             <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
                             <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
                                 placeholder="Enter your phone number" helperText={<ErrorMessage name="phoneNumber" />} />
+                            <FormControl fullwidth >
+                                        <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={accountType}
+                                            label="Age"
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value={10}>Patient</MenuItem>
+                                            <MenuItem value={20}>Doctor</MenuItem>
+                                            <MenuItem value={30}>counsellor</MenuItem>
+                                        </Select>
+                            </FormControl>
+
+                            {accountType != 10?
+                            <Field as={TextField} required fullWidth name='Registration Number'
+                            label='Registration Number' placeholder="Enter your Registration number"
+                            />:null
+                        }
+                        
                             <Field as={TextField} required fullWidth name='password' type="password"
                                 label='Password' placeholder="Enter your password"
                                 helperText={<ErrorMessage name="password" />} />
@@ -85,6 +114,7 @@ const Signup = ({loginCallBack}) => {
                                 helperText={<ErrorMessage name="confirmPassword" />} />
                             <Button type='submit' variant='contained' disabled={props.isSubmitting}
                                 color='primary'>{props.isSubmitting ? "Loading" : "Sign up"}</Button>
+
 
                         </Form>
                     )}
