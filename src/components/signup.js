@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import Radio from '@material-ui/core/Radio';
@@ -12,37 +12,49 @@ import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
 import axios from 'axios';
 import { signUp } from '../services/loginAPI';
+
 const Signup = ({loginCallBack}) => {
+    const [errMsg, setErrMsg] = useState("");
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
     const marginTop = { marginTop: 5 }
     const initialValues = {
         name: '',
-        email: '',
-        gender: '',
-        phoneNumber: '',
+        email_address: '',
+        gender: 'male',
+        phone_number: '',
         password: '',
         confirmPassword: '',
-        termsAndConditions: false,
-        userType: ''
+        userType: 'counselor'
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
-        email: Yup.string().email("Enter valid email").required("Required"),
-        phoneNumber: Yup.number().typeError("Enter valid Phone Number").required('Required'),
+        email_address: Yup.string().email("Enter valid email").required("Required"),
+        phone_number: Yup.number().typeError("Enter valid Phone Number").required('Required'),
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required")
     })
     const onSubmit = (values, props) => {
-        signUp(values, 'patient');
-        console.log(values)
-        console.log(props)
-        setTimeout(() => {
-
-            props.resetForm()
-            props.setSubmitting(false)
-        }, 2000)
+        //TODO send user type and other information
+        signUp({...values, age: 18, last_name: values.name, userType: 'counselor', 
+        registration_number: "afads"
+        ,gender: "male"
+        })
+        .then(data => {
+            console.log(data);
+            if(data.errors) {
+                setErrMsg(data.errors[0]);
+            } else {
+                loginCallBack();
+                console.log(values);
+                props.resetForm();
+                setErrMsg("");
+            }
+        },
+        (error) => {
+            setErrMsg("Unable to regiester")
+        }).finally(() =>  props.setSubmitting(false));
     }
     return (
         <Grid>
@@ -57,12 +69,13 @@ const Signup = ({loginCallBack}) => {
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {(props) => (
                         <Form>
+                            {errMsg}
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
-                            <Field required as={TextField} fullWidth name="email" label='Email'
+                            <Field required as={TextField} fullWidth name="email_address" label='Email'
                                 placeholder="Enter your email" helperText={<ErrorMessage name="email" />} />
                             <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
-                            <Field as={TextField} required fullWidth name="phoneNumber" label='Phone Number'
+                            <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
                                 placeholder="Enter your phone number" helperText={<ErrorMessage name="phoneNumber" />} />
                             <Field as={TextField} required fullWidth name='password' type="password"
                                 label='Password' placeholder="Enter your password"

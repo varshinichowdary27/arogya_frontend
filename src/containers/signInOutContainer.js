@@ -52,7 +52,7 @@ const SignInOutContainer = ({loginCallBack}) => {
         <Login handleChange={handleChange} loginCallBack={loginCallBack} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Signup />
+        <Signup loginCallBack={loginCallBack}/>
       </TabPanel>
     </Paper>
 

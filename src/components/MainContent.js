@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 function MainContent() {
     const classes = useStyles();
-  
+    const UserInfo = JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
     return (
       <main className={classes.fullWidth}>
         <div className={classes.toolbar} />
@@ -29,7 +29,7 @@ function MainContent() {
         </div>
         <div className={classes.content}>
           <Typography paragraph>
-            Welcome to Counselor's HomePage
+            Welcome to {UserInfo.userType}
           </Typography>
         </div>
       </main>

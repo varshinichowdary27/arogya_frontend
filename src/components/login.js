@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -7,6 +7,7 @@ import { login } from '../services/loginAPI';
 
 const Login = ({ handleChange, loginCallBack}) => {
 
+    const [errMsg, setErrMsg] = useState("");
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
     const btnstyle = { margin: '8px 0' }
@@ -19,17 +20,21 @@ const Login = ({ handleChange, loginCallBack}) => {
         password: Yup.string().required("Required")
     })
     const onSubmit = (values, props) => {
-        login({...values, userType: 'PATIENT'})
+        // TODO send userType
+        login({...values, userType: 'counselor'})
             .then(data => {
                 console.log(data);
                 if(data.logged) {
                     loginCallBack();
                     console.log(values);
                     props.resetForm()
+                    setErrMsg("");
+                } else {
+                    setErrMsg("Username or password that you provide is wrong");
                 }
             },
             () => {
-            return "Unable to Login";
+                setErrMsg("Unable to Login");
             }).finally(() =>  props.setSubmitting(false));
     }
     return (
@@ -42,6 +47,7 @@ const Login = ({ handleChange, loginCallBack}) => {
                 <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                     {(props) => (
                         <Form>
+                            {errMsg}
                             <Field as={TextField} label='Username' name="username"
                                 placeholder='Enter username' fullWidth required
                                 helperText={<ErrorMessage name="username" />}
