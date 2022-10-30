@@ -14,12 +14,12 @@ export const login = ({username, password, userType}) => axios.get(URLS.login, {
   );
 
 export const signUp = (userData) => {
-  let register_url = URLS.register_user;
+  let register_url = URLS.register_patient;
   if(userData.userType === 'patient') {
-    register_url = URLS.register_user;
+    register_url = URLS.register_patient;
   }
   if (userData.userType === 'counselor') {
-    register_url = '/register_counselor';
+    register_url = URLS.register_counselor;
   }
   return axios.post(register_url, userData).then(
     auth => {
