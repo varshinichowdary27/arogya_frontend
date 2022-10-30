@@ -9,7 +9,6 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import { logOut } from '../services/loginAPI';
 
 const drawerWidth = 240;
 
@@ -20,8 +19,8 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundImage: `linear-gradient(#cfd9df,#e2ebf0)`,
-    color: 'grey',
+    backgroundImage: `linear-gradient(#D3D3D3,#FFFFFF,#D3D3D3)`,
+    color: 'black',
   },
   bigAvatar: {
     margin: 30,
@@ -30,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SideMenu({loginCallBack}) {
+function SideMenu() {
     const classes = useStyles();
   
     return (
@@ -45,23 +44,17 @@ function SideMenu({loginCallBack}) {
       >
        <Grid container justify='center' alignItems='center'>
           <Avatar
-            src='https://www.google.com/search?q=profile+picture+default+image+js&sxsrf=ALiCzsZtPrmlhqqNgwDqCPKrHUl95D6ydA:1666980691241&source=lnms&tbm=isch&sa=X&ved=2ahUKEwipmMv_woP7AhXsEVkFHdFhBQEQ_AUoAXoECAIQAw&biw=1536&bih=754&dpr=1.25#imgrc=zo-PD7u7TYS2vM'
+            src=''
             className={classes.bigAvatar}
           />
         </Grid>
         <List>
           {['Profile', 'Sign Out'].map((text, index) => (
             <ListItem button key={text}>
-              <div style= {{display: 'flex'}} onClick={() => {
-                  if (index === 1 ) {
-                    logOut();
-                    loginCallBack();
-                  }}}>
-              <ListItemIcon >
-                {index % 2 === 0 ? <AccountCircle /> : <ExitToApp/>}
+              <ListItemIcon>
+                {index % 2 === 0 ? <AccountCircle /> : <ExitToApp />}
               </ListItemIcon>
               <ListItemText primary={text} />
-              </div>
             </ListItem>
           ))}
         </List>

@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Face';
 import { MenuItem } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
 const drawerWidth = 240;
 
@@ -11,12 +14,14 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
+    backgroundImage: `linear-gradient(#D3D3D3,#FFFFFF,#D3D3D3)`,
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+    color: '#000000',
   },
 }));
 
@@ -27,13 +32,13 @@ function TopMenu() {
       <AppBar position='fixed' className={classes.appBar}>
         <Toolbar>
           <MenuItem>
-            <Typography variant='h6' className={classes.title}>
-              Patients List
+            <Typography variant='h6' className={classes.title}> 
+              <b>Patients List</b>
             </Typography>
           </MenuItem>
           <MenuItem>
             <Typography variant='h6' className={classes.title}>
-              Appointments List
+              <b>Appointments List</b>
             </Typography>
           </MenuItem>
         </Toolbar>
