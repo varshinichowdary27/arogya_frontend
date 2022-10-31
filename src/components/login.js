@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
-import { Grid, Paper, Avatar, TextField, Button, Typography, Link ,CssBaseline,Box} from '@material-ui/core'
+import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { login } from '../services/loginAPI';
-import arogya_poster from '../arogya_poster.jpeg'
 const Login = ({ handleChange, loginCallBack}) => {
 
     const [errMsg, setErrMsg] = useState("");
-    const [accountType, setAccountType] = useState(10);
+    const [userType, setAccountType] = useState('patient');
     const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
     const btnstyle = { margin: '8px 0' }
@@ -32,7 +28,7 @@ const Login = ({ handleChange, loginCallBack}) => {
     })
     const onSubmit = (values, props) => {
         // TODO send userType
-        login({...values, userType: 'counselor'})
+        login({...values, userType: userType})
             .then(data => {
                 console.log(data);
                 if(data.logged) {
@@ -59,20 +55,20 @@ const Login = ({ handleChange, loginCallBack}) => {
                 <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                     {(props) => (
                         <Form>
+                            <div style={{color: 'red'}}>
                             {errMsg}
-                            <FormControl fullwidth >
+                            </div>
+                            <FormControl style={{width: "100%", padding: "10px 0px"}}>
                                         <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={accountType}
-                                            label="Age"
+                                            value={userType}
+                                            label="userType"
                                             onChange={accountHandleChange}
                                         >
-                                            <MenuItem value={10}>Patient</MenuItem>
-                                           
-                                            
-                                            <MenuItem value={20}>manager</MenuItem>
+                                            <MenuItem value='patient'>Patient</MenuItem>
+                                            <MenuItem value='manager'>manager</MenuItem>
                                         </Select>
                             </FormControl>
                             <Field as={TextField} label='Username' name="username"

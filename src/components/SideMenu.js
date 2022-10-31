@@ -9,6 +9,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
+import { logOut } from '../services/loginAPI';
 
 const drawerWidth = 240;
 
@@ -29,37 +30,44 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SideMenu() {
-    const classes = useStyles();
-  
-    return (
-      <Drawer
-        open={true}
-        variant='permanent'
-        anchor='left'
-        className={classes.drawer}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-       <Grid container justify='center' alignItems='center'>
-          <Avatar
-            src= 'https://as2.ftcdn.net/v2/jpg/05/09/59/75/1000_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg'
-            className={classes.bigAvatar}
-          />
-        </Grid>
-        <List>
-          {['Profile', 'Sign Out'].map((text, index) => (
+function SideMenu({ loginCallBack }) {
+  const classes = useStyles();
+
+  return (
+    <Drawer
+      open={true}
+      variant='permanent'
+      anchor='left'
+      className={classes.drawer}
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+    >
+      <Grid container justifyContent='center' alignItems='center'>
+        <Avatar
+          src='https://as2.ftcdn.net/v2/jpg/05/09/59/75/1000_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg'
+          className={classes.bigAvatar}
+        />
+      </Grid>
+      <List>
+        {['Profile', 'Sign Out'].map((text, index) => (
+          <div style={{ display: 'flex' }} onClick={() => {
+            if (index === 1) {
+              logOut();
+              loginCallBack();
+            }
+          }}>
             <ListItem button key={text}>
-              <ListItemIcon>
+              <ListItemIcon >
                 {index % 2 === 0 ? <AccountCircle /> : <ExitToApp />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
-          ))}
-        </List>
-      </Drawer>
-    );
-  }
-  
-  export default SideMenu;
+          </div>
+        ))}
+      </List>
+    </Drawer>
+  );
+}
+
+export default SideMenu;

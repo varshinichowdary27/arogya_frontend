@@ -12,7 +12,7 @@ import { signUp } from '../services/loginAPI';
 
 const Signup = ({loginCallBack}) => {
     const [errMsg, setErrMsg] = useState("");
-    const [accountType, setAccountType] = useState(10);
+    const [accountType, setAccountType] = useState("patient");
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -22,8 +22,7 @@ const Signup = ({loginCallBack}) => {
         gender: 'male',
         phone_number: '',
         password: '',
-        confirmPassword: '',
-        userType: 'counselor'
+        confirmPassword: ''
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
@@ -33,13 +32,13 @@ const Signup = ({loginCallBack}) => {
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required")
     })
     const handleChange = (event) =>{
-setAccountType(event.target.value);
+        setAccountType(event.target.value);
     }
     const onSubmit = (values, props) => {
         //TODO send user type and other information
         console.log("entered");
         signUp({...values, age: 18, last_name: values.name
-        ,gender: "male"
+        ,gender: "male", userType: accountType
         })
         .then(data => {
             console.log(data);

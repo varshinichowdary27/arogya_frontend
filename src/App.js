@@ -4,7 +4,6 @@ import './App.css';
 import Home from './components/Home';
 import { BASE_ULR, URLS } from './config/constant';
 import SignInOutContainer from './containers/signInOutContainer';
-import { Grid, Paper,Box } from '@material-ui/core'
 
 
 const App = () => {

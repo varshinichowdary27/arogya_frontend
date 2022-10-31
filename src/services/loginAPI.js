@@ -21,6 +21,9 @@ export const signUp = (userData) => {
   if (userData.userType === 'counselor') {
     register_url = URLS.register_counselor;
   }
+  if (userData.userType === 'manager') {
+    register_url = URLS.register_manager;
+  }
   return axios.post(register_url, userData).then(
     auth => {
       if(auth.data.errors === undefined ) {

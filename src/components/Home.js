@@ -10,13 +10,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Home() {
+function Home({loginCallBack}) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <TopMenu />
-      <SideMenu />
+      <SideMenu loginCallBack={loginCallBack}/>
       <MainContent />
     </div>
   );

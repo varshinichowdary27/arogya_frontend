@@ -56,7 +56,7 @@ const SignInOutContainer = ({loginCallBack}) => {
             backgroundPosition: 'center',
           }}
         >
-           <img src={arogya_poster} style={{width:'100%',height:'100%'}} alt="Arogya Image" />
+           <img src={arogya_poster} style={{width:'100%',height:'100%'}} alt="Arogya" />
           </Grid>
         
 
