@@ -97,10 +97,11 @@ setAccountType(event.target.value);
                                             <MenuItem value={10}>Patient</MenuItem>
                                             <MenuItem value={20}>Doctor</MenuItem>
                                             <MenuItem value={30}>counsellor</MenuItem>
+                                            <MenuItem value={40}>manager</MenuItem>
                                         </Select>
                             </FormControl>
 
-                            {accountType != 10?
+                            {accountType == 20 || accountType == 30 ?
                             <Field as={TextField} required fullWidth name='Registration Number'
                             label='Registration Number' placeholder="Enter your Registration number"
                             />:null
