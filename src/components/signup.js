@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
-import axios from 'axios';
 import { signUp } from '../services/loginAPI';
 
 const Signup = ({loginCallBack}) => {
@@ -22,7 +16,6 @@ const Signup = ({loginCallBack}) => {
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
-    const marginTop = { marginTop: 5 }
     const initialValues = {
         name: '',
         email_address: '',
@@ -45,8 +38,7 @@ setAccountType(event.target.value);
     const onSubmit = (values, props) => {
         //TODO send user type and other information
         console.log("entered");
-        signUp({...values, age: 18, last_name: values.name, userType: 'counselor', 
-        registration_number: "afads"
+        signUp({...values, age: 18, last_name: values.name
         ,gender: "male"
         })
         .then(data => {
@@ -66,7 +58,7 @@ setAccountType(event.target.value);
     }
     return (
         <Grid>
-            <Paper style={paperStyle}>
+            <Paper style={paperStyle} elevation={0}>
                 <Grid align='center'>
                     <Avatar style={avatarStyle}>
                         <AddCircleOutlineOutlinedIcon />
@@ -77,7 +69,9 @@ setAccountType(event.target.value);
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {(props) => (
                         <Form>
+                            <div style={{color: 'red'}}>
                             {errMsg}
+                            </div>
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
                             <Field required as={TextField} fullWidth name="email_address" label='Email'
@@ -85,7 +79,10 @@ setAccountType(event.target.value);
                             <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
                             <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
                                 placeholder="Enter your phone number" helperText={<ErrorMessage name="phoneNumber" />} />
-                            <FormControl fullwidth >
+                            <FormControl style={{
+                                width: '100%',
+                                padding: '12px'
+                            }}>
                                         <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
@@ -94,15 +91,15 @@ setAccountType(event.target.value);
                                             label="Age"
                                             onChange={handleChange}
                                         >
-                                            <MenuItem value={10}>Patient</MenuItem>
-                                            <MenuItem value={20}>Doctor</MenuItem>
-                                            <MenuItem value={30}>counsellor</MenuItem>
-                                            <MenuItem value={40}>manager</MenuItem>
+                                            <MenuItem value='patient'>Patient</MenuItem>
+                                            <MenuItem value='doctor'>Doctor</MenuItem>
+                                            <MenuItem value='counselor'>Counselor</MenuItem>
+                                            <MenuItem value='manager'>Manager</MenuItem>
                                         </Select>
                             </FormControl>
 
-                            {accountType == 20 || accountType == 30 ?
-                            <Field as={TextField} required fullWidth name='Registration Number'
+                            {accountType === 'doctor' || accountType === 'counselor' ?
+                            <Field as={TextField} required fullWidth name='registration_number'
                             label='Registration Number' placeholder="Enter your Registration number"
                             />:null
                         }
@@ -113,7 +110,7 @@ setAccountType(event.target.value);
                             <Field as={TextField} required fullWidth name="confirmPassword" type="password"
                                 label='Confirm Password' placeholder="Confirm your password"
                                 helperText={<ErrorMessage name="confirmPassword" />} />
-                            <Button type='submit' variant='contained' disabled={props.isSubmitting}
+                            <Button style={{margin: '   15px'}} type='submit' variant='contained' disabled={props.isSubmitting}
                                 color='primary'>{props.isSubmitting ? "Loading" : "Sign up"}</Button>
 
 
