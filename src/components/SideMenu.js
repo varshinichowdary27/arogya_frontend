@@ -44,7 +44,7 @@ function SideMenu() {
       >
        <Grid container justify='center' alignItems='center'>
           <Avatar
-            src=''
+            src= 'https://as2.ftcdn.net/v2/jpg/05/09/59/75/1000_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg'
             className={classes.bigAvatar}
           />
         </Grid>
