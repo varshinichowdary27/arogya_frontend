@@ -3,11 +3,11 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+
 import Login from '../components/login'
 import Signup from '../components/signup'
-
-
+import { Grid,Box,CssBaseline } from '@material-ui/core'
+import arogya_poster from '../arogya_poster.jpeg'
 const SignInOutContainer = ({loginCallBack}) => {
   const [value, setValue] = useState(0)
   const handleChange = (event, newValue) => {
@@ -19,6 +19,8 @@ const SignInOutContainer = ({loginCallBack}) => {
     const { children, value, index, ...other } = props;
 
     return (
+
+      
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -36,6 +38,39 @@ const SignInOutContainer = ({loginCallBack}) => {
   }
 
   return (
+
+    
+    <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+           <img src={arogya_poster} style={{width:'100%',height:'100%'}} alt="Arogya Image" />
+          </Grid>
+        
+
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          ></Box>
+          <div className='signinContainer' style={{width:'100%'}}>
     <Paper elevation={1} style={paperStyle}>
       <Tabs
         value={value}
@@ -55,7 +90,11 @@ const SignInOutContainer = ({loginCallBack}) => {
         <Signup loginCallBack={loginCallBack}/>
       </TabPanel>
     </Paper>
-
+    </div>
+         </Grid> 
+         </Grid>
+        
+     
   )
 }
 
