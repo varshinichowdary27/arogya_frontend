@@ -26,7 +26,7 @@ const App = () => {
   });
   return (
   
-    <div className="App">
+    <div className="App" style={{height: '100%'}}>
     
            {loggedIn ? <Home loginCallBack={ () => {
          setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);

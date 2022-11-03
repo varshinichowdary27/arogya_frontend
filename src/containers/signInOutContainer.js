@@ -40,7 +40,7 @@ const SignInOutContainer = ({loginCallBack}) => {
   return (
 
     
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" style={{height: '100%'}} sx={{ height: '100%%' }}>
         <CssBaseline />
         <Grid
           item
@@ -56,7 +56,7 @@ const SignInOutContainer = ({loginCallBack}) => {
             backgroundPosition: 'center',
           }}
         >
-           <img src={arogya_poster} style={{width:'100%',height: '816px'}} alt="Arogya" />
+           <img src={arogya_poster} style={{width:'100%',height: '100%'}} alt="Arogya" />
           </Grid>
         
 
