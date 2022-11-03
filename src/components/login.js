@@ -84,7 +84,7 @@ const Login = ({ handleChange, loginCallBack}) => {
                         </Form>
                     )}
                 </Formik>
-                <Typography >`Don't have an account ?
+                <Typography variant='caption' >`Don't have an account ?
                     <Link href="#" onClick={() => handleChange("event", 1)} >
                         Sign Up
                     </Link>

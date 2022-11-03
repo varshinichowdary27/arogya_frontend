@@ -3,5 +3,6 @@ export const URLS = {
     login: '/login',
     register_patient: '/register_patient',
     register_counselor: '/register_counselor',
-    register_manager: '/register_manager'
+    register_manager: '/register_manager',
+    register_doctor: '/register_doctor'
 }

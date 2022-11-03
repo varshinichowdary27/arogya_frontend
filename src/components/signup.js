@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
+import "yup-phone";
 import { signUp } from '../services/loginAPI';
 
 const Signup = ({loginCallBack}) => {
@@ -19,7 +20,6 @@ const Signup = ({loginCallBack}) => {
     const initialValues = {
         name: '',
         email_address: '',
-        gender: 'male',
         phone_number: '',
         password: '',
         confirmPassword: ''
@@ -27,9 +27,10 @@ const Signup = ({loginCallBack}) => {
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
         email_address: Yup.string().email("Enter valid email").required("Required"),
-        phone_number: Yup.number().typeError("Enter valid Phone Number").required('Required'),
+        phone_number: Yup.string().phone().typeError("Enter valid Phone Number").required('Required'),
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required")
+        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required"),
+        registration_number: Yup.string().length(5, "Registeration number is 5 character long")
     })
     const handleChange = (event) =>{
         setAccountType(event.target.value);
@@ -74,10 +75,10 @@ const Signup = ({loginCallBack}) => {
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
                             <Field required as={TextField} fullWidth name="email_address" label='Email'
-                                placeholder="Enter your email" helperText={<ErrorMessage name="email" />} />
+                                placeholder="Enter your email" helperText={<ErrorMessage name="email_address" />} />
                             <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
                             <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
-                                placeholder="Enter your phone number" helperText={<ErrorMessage name="phoneNumber" />} />
+                                placeholder="Enter your phone number" helperText={<ErrorMessage name="phone_number" />} />
                             <FormControl style={{
                                 width: '100%',
                                 padding: '12px'
@@ -97,12 +98,13 @@ const Signup = ({loginCallBack}) => {
                                         </Select>
                             </FormControl>
 
-                            {accountType === 'doctor' || accountType === 'counselor' ?
-                            <Field as={TextField} required fullWidth name='registration_number'
-                            label='Registration Number' placeholder="Enter your Registration number"
-                            />:null
-                        }
-                        
+                            {(accountType === 'doctor' || accountType === 'counselor') && <>
+                                <Field as={TextField} required fullWidth name='registration_number'
+                                label='Registration Number' placeholder="Enter your Registration number"
+                                />
+                                <FormHelperText><ErrorMessage name="registration_number" /></FormHelperText>
+                            </>
+                            }
                             <Field as={TextField} required fullWidth name='password' type="password"
                                 label='Password' placeholder="Enter your password"
                                 helperText={<ErrorMessage name="password" />} />
@@ -111,8 +113,6 @@ const Signup = ({loginCallBack}) => {
                                 helperText={<ErrorMessage name="confirmPassword" />} />
                             <Button style={{margin: '   15px'}} type='submit' variant='contained' disabled={props.isSubmitting}
                                 color='primary'>{props.isSubmitting ? "Loading" : "Sign up"}</Button>
-
-
                         </Form>
                     )}
                 </Formik>
