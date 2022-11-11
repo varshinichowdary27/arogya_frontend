@@ -68,12 +68,14 @@ const Login = ({ handleChange, loginCallBack}) => {
                                             onChange={accountHandleChange}
                                         >
                                             <MenuItem value='patient'>Patient</MenuItem>
-                                            <MenuItem value='manager'>manager</MenuItem>
+                                            <MenuItem value='doctor'>Doctor</MenuItem>
+                                            <MenuItem value='counselor'>Counselor</MenuItem>
+                                            <MenuItem value='manager'>Manager</MenuItem>
                                         </Select>
                             </FormControl>
-                            <Field as={TextField} label='Username' name="username"
-                                placeholder='Enter username' fullWidth required
-                                helperText={<ErrorMessage name="username" />}
+                            <Field as={TextField} label='Email' name="Email"
+                                placeholder='Enter email' fullWidth required
+                                helperText={<ErrorMessage name="Email" />}
                             />
                             <Field as={TextField} label='Password' name="password"
                                 placeholder='Enter password' type='password' fullWidth required

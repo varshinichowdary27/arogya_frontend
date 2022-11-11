@@ -27,7 +27,7 @@ const Signup = ({loginCallBack}) => {
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
         email_address: Yup.string().email("Enter valid email").required("Required"),
-        phone_number: Yup.string().phone().typeError("Enter valid Phone Number").required('Required'),
+        phone_number: Yup.string().phone("CA").typeError("Enter valid Phone Number").required('Required'),
         password: Yup.string().min(8, "Password minimum length should be 8").required("Required"),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required"),
         registration_number: Yup.string().length(5, "Registeration number is 5 character long")
@@ -88,7 +88,7 @@ const Signup = ({loginCallBack}) => {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             value={accountType}
-                                            label="Age"
+                                            label="accountType"
                                             onChange={handleChange}
                                         >
                                             <MenuItem value='patient'>Patient</MenuItem>

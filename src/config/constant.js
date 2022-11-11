@@ -4,5 +4,6 @@ export const URLS = {
     register_patient: '/register_patient',
     register_counselor: '/register_counselor',
     register_manager: '/register_manager',
-    register_doctor: '/register_doctor'
+    register_doctor: '/register_doctor',
+    register_appointment: '/register_appointment'
 }

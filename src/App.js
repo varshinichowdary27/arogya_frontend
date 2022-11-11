@@ -16,7 +16,7 @@ const App = () => {
       config.url !== URLS.register_patient &&
       config.url !== URLS.register_counselor) {
         if(sessionStorage.getItem("AUTH_TOKEN") !== null) {
-          config.headers.common['Authorization'] = sessionStorage.getItem("AUTH_TOKEN");
+          //config.headers.common['Authorization'] = sessionStorage.getItem("AUTH_TOKEN");
       }
     }
     return config;

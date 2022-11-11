@@ -1,21 +1,37 @@
 import axios from 'axios';
 import { URLS } from '../config/constant';
-export const login = ({username, password, userType}) => axios.get(URLS.login, { params: {
+export const login = ({ username, password, userType }) => axios.get(URLS.login, {
+  params: {
     email: username,
     password,
     userType
-  }}).then(
-      auth => {
-        if (auth.data.data.logged) {
-          sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({...auth.data.data, userType}) ); 
-        }
-        return auth.data.data;
-      }
-  );
+  }
+}).then(
+  auth => {
+    if (auth.data.data.logged) {
+      sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({ ...auth.data.data, userType }));
+    }
+    return auth.data.data;
+  }
+);
+
+export const send_self_Assesment = (email_address, questions_list) => {
+  console.log(questions_list);
+  return axios.post(URLS.register_appointment,  
+  {
+    email_address: email_address,
+    assessment: {
+      questions_list: questions_list.map(q => ({question: q.question, problem_frequency: q.answer }))
+    }
+  }).then(
+  auth => {
+    return auth.data.data;
+  }
+)};
 
 export const signUp = (userData) => {
   let register_url = URLS.register_patient;
-  if(userData.userType === 'patient') {
+  if (userData.userType === 'patient') {
     register_url = URLS.register_patient;
   }
   if (userData.userType === 'counselor') {
@@ -29,14 +45,14 @@ export const signUp = (userData) => {
   }
   return axios.post(register_url, userData).then(
     auth => {
-      if(auth.data.errors === undefined ) {
-        sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({...userData}));
+      if (auth.data.errors === undefined) {
+        sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({ ...userData }));
       } else {
         return auth.data
       }
       return auth.data;
     }
-);
+  );
 
 }
 
