@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { URLS } from '../config/constant';
-export const login = ({ username, password, userType }) => axios.get(URLS.login, {
+export const login = ({ email, password, userType }) => axios.get(URLS.login, {
   params: {
-    email: username,
+    email,
     password,
     userType
   }
