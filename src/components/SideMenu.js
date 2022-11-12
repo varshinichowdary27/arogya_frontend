@@ -9,7 +9,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import { getUserInfo, logOut } from '../services/loginAPI';
+import { getUserInfo, getUserTypeToDisplay, logOut } from '../services/loginAPI';
 
 const drawerWidth = 240;
 
@@ -48,7 +48,7 @@ function SideMenu({ loginCallBack }) {
           src='https://as2.ftcdn.net/v2/jpg/05/09/59/75/1000_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg'
           className={classes.bigAvatar}
         />
-        <Typography variant="h4">{user.userType}</Typography>
+        <Typography variant="h4">{getUserTypeToDisplay(user)}</Typography>
       </Grid>
       <List>
         <div style={{ display: 'flex' }}>

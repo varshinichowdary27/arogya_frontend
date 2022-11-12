@@ -67,4 +67,22 @@ export const getPatientList = () => axios.get(URLS.get_appointments).then(
     return auth.data.data;
   }
 );
+
 export const getUserInfo =  () => JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
+
+export const getUserTypeToDisplay=  (userData) => {
+  let userType= ""
+  if (userData.userType === 'patient') {
+    userType = 'Patient';
+  }
+  if (userData.userType === 'counselor') {
+    userType = 'Counselor';
+  }
+  if (userData.userType === 'manager') {
+    userType = 'Manager';
+  }
+  if (userData.userType === 'doctor') {
+    userType = 'Doctor';
+  }
+  return userType;
+};
