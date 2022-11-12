@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SideMenu from '../components/SideMenu';
 import PatientHP from '../components/PatientHP';
-import CounselorHP from '../components/CounselorHP';
+import CounselorHP from './Counselor/counselorHP';
 import DoctorHP from '../components/DoctorHP';
 import ManagerHP from '../components/ManagerHP';
 import { AppBar, Box, Toolbar, Typography } from '@material-ui/core';
@@ -12,6 +12,7 @@ import { getUserInfo } from '../services/loginAPI';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    padding: '10px 0px'
   },
 }));
 

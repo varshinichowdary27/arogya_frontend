@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { login } from '../services/loginAPI';
+import { Alert } from '@mui/material';
 const Login = ({ handleChange, loginCallBack }) => {
 
     const [errMsg, setErrMsg] = useState("");
@@ -55,9 +56,7 @@ const Login = ({ handleChange, loginCallBack }) => {
                 <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                     {(props) => (
                         <Form>
-                            <div style={{ color: 'red' }}>
-                                {errMsg}
-                            </div>
+                            {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
                             <FormControl style={{ width: "100%", padding: "10px 0px" }}>
                                 <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
                                 <Select

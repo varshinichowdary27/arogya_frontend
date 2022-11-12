@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import './App.css';
-import CPatientList from './components/CPatientList';
 import Home from './components/Home';
 import { BASE_ULR, URLS } from './config/constant';
 import SignInOutContainer from './containers/signInOutContainer';
@@ -39,8 +38,6 @@ const App = () => {
 
 
       }
-
-      {}
     </div>
 
 

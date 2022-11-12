@@ -5,5 +5,6 @@ export const URLS = {
     register_counselor: '/register_counselor',
     register_manager: '/register_manager',
     register_doctor: '/register_doctor',
-    register_appointment: '/register_appointment'
+    register_appointment: '/register_appointment',
+    get_appointments: '/get_appointments'
 }

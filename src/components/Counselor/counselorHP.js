@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import CPatientList from './CPatientList';
+import { PatientList } from './patientList';
 
 const width = 700;
 
@@ -15,7 +15,7 @@ const widthModifier = {
 export default function CounselorHP() {
   const [value, setValue] = React.useState('1');
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event, newValue: string) => {
     setValue(newValue);
   };
 
@@ -30,7 +30,7 @@ export default function CounselorHP() {
             <Tab label="Appointments List" value="3" style={widthModifier} />
           </TabList>
         </Box>
-        <TabPanel value="1"> <CPatientList /></TabPanel>
+        <TabPanel value="1"><PatientList /></TabPanel>
         <TabPanel value="2">Doctors List</TabPanel>
         <TabPanel value="3">Appointments List</TabPanel>
       </TabContext>

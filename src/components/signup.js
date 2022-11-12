@@ -10,6 +10,7 @@ import { FormHelperText } from '@material-ui/core'
 import * as Yup from 'yup'
 import "yup-phone";
 import { signUp } from '../services/loginAPI';
+import { Alert } from '@mui/material';
 
 const Signup = ({ loginCallBack }) => {
     const [errMsg, setErrMsg] = useState("");
@@ -70,9 +71,7 @@ const Signup = ({ loginCallBack }) => {
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {(props) => (
                         <Form>
-                            <div style={{ color: 'red' }}>
-                                {errMsg}
-                            </div>
+                            {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
                             <Field required as={TextField} fullWidth name="email_address" label='Email'
