@@ -23,24 +23,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TopMenu() {
-    const classes = useStyles();
-  
-    return (
-      <AppBar position='fixed' className={classes.appBar}>
-        <Toolbar>
-          <MenuItem>
-            <Typography variant='h6' className={classes.title}> 
-              <b>Patients List</b>
-            </Typography>
-          </MenuItem>
-          <MenuItem>
-            <Typography variant='h6' className={classes.title}>
-              <b>Appointments List</b>
-            </Typography>
-          </MenuItem>
-        </Toolbar>
-      </AppBar>
-    );
-  }
-  
-  export default TopMenu;
+  const classes = useStyles();
+
+  return (
+    <AppBar position='fixed' className={classes.appBar}>
+      <Toolbar>
+        <MenuItem>
+          <Typography variant='h6' className={classes.title}>
+            <b>Patients List</b>
+          </Typography>
+        </MenuItem>
+        <MenuItem>
+          <Typography variant='h6' className={classes.title}>
+            <b>Appointments List</b>
+          </Typography>
+        </MenuItem>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+export default TopMenu;

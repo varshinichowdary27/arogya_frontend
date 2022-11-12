@@ -17,17 +17,18 @@ export const login = ({ email, password, userType }) => axios.get(URLS.login, {
 
 export const send_self_Assesment = (email_address, questions_list) => {
   console.log(questions_list);
-  return axios.post(URLS.register_appointment,  
-  {
-    email_address: email_address,
-    assessment: {
-      questions_list: questions_list.map(q => ({question: q.question, problem_frequency: q.answer }))
-    }
-  }).then(
-  auth => {
-    return auth.data.data;
-  }
-)};
+  return axios.post(URLS.register_appointment,
+    {
+      email_address: email_address,
+      assessment: {
+        questions_list: questions_list.map(q => ({ question: q.question, problem_frequency: q.answer }))
+      }
+    }).then(
+      auth => {
+        return auth.data.data;
+      }
+    )
+};
 
 export const signUp = (userData) => {
   let register_url = URLS.register_patient;

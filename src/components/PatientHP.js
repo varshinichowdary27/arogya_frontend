@@ -17,19 +17,19 @@ export default function PatientHP() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  
+
 
   return (
-    <Box sx={{ width: '500%', typography: 'body1'}}>
+    <Box sx={{ width: '500%', typography: 'body1' }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="black" indicatorColor="secondary" centered>
             <Tab label="Appointments" value="1" style={widthModifier} />
-            <Tab label="Self-Assessment Result" value="2" style={widthModifier} />
+            <Tab label="Self-Assessment" value="2" style={widthModifier} />
           </TabList>
         </Box>
         <TabPanel value="1">Appointments</TabPanel>
-        <TabPanel value="2">Self-Assessment Result</TabPanel>
+        <TabPanel value="2">Self-Assessment</TabPanel>
       </TabContext>
     </Box>
   );

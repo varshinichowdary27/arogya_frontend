@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import CPatientList from './CPatientList';
 
 const width = 700;
 
@@ -17,19 +18,19 @@ export default function CounselorHP() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  
+
 
   return (
-    <Box sx={{ width: '500%', typography: 'body1'}}>
+    <Box sx={{ width: '500%', typography: 'body1' }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="black" indicatorColor="secondary" centered>
             <Tab label="Patients List" value="1" style={widthModifier} />
             <Tab label="Doctors List" value="2" style={widthModifier} />
             <Tab label="Appointments List" value="3" style={widthModifier} />
           </TabList>
         </Box>
-        <TabPanel value="1">Patients List</TabPanel>
+        <TabPanel value="1"> <CPatientList /></TabPanel>
         <TabPanel value="2">Doctors List</TabPanel>
         <TabPanel value="3">Appointments List</TabPanel>
       </TabContext>
