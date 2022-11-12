@@ -20,20 +20,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MainContent() {
-    const classes = useStyles();
-  
-    return (
-      <main className={classes.fullWidth}>
-        <div className={classes.title}>
-          
-        </div>
-        <div className={classes.content}>
-          <Typography variant='h6' >
-            <b>Welcome to Counselor's HomePage</b>
-          </Typography>
-        </div>
-      </main>
-    );
-  }
-  
-  export default MainContent;
+  const classes = useStyles();
+
+  return (
+    <main className={classes.fullWidth}>
+      <div className={classes.title}>
+
+      </div>
+      <div className={classes.content}>
+        <Typography variant='h6' >
+          <b>Welcome to Counselor's HomePage</b>
+        </Typography>
+      </div>
+    </main>
+  );
+}
+
+export default MainContent;

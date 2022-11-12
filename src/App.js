@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import './App.css';
+import CPatientList from './components/CPatientList';
 import Home from './components/Home';
 import { BASE_ULR, URLS } from './config/constant';
 import SignInOutContainer from './containers/signInOutContainer';
@@ -15,8 +16,8 @@ const App = () => {
     if (config.url !== URLS.login &&
       config.url !== URLS.register_patient &&
       config.url !== URLS.register_counselor) {
-        if(sessionStorage.getItem("AUTH_TOKEN") !== null) {
-          //config.headers.common['Authorization'] = sessionStorage.getItem("AUTH_TOKEN");
+      if (sessionStorage.getItem("AUTH_TOKEN") !== null) {
+        //config.headers.common['Authorization'] = sessionStorage.getItem("AUTH_TOKEN");
       }
     }
     return config;
@@ -25,20 +26,22 @@ const App = () => {
     return Promise.reject(error);
   });
   return (
-  
-    <div className="App" style={{height: '100%'}}>
-    
-           {loggedIn ? <Home loginCallBack={ () => {
-         setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
-       }}/> : 
-       <SignInOutContainer loginCallBack={ () => {
-         setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
-       }}></SignInOutContainer> 
-     
-     
-     }
-     </div>
-              
+
+    <div className="App" style={{ height: '100%' }}>
+
+      {loggedIn ? <Home loginCallBack={() => {
+        setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
+      }} /> :
+        <SignInOutContainer loginCallBack={() => {
+          setLoggedIn(sessionStorage.getItem("AUTH_TOKEN") !== null);
+        }}></SignInOutContainer>
+
+
+      }
+
+      {}
+    </div>
+
 
   );
 }

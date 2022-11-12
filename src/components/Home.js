@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TopMenu from '../components/TopMenu';
 import SideMenu from '../components/SideMenu';
@@ -16,54 +16,54 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Home({loginCallBack}) {
+function Home({ loginCallBack }) {
   const classes = useStyles();
-    const[itemValue,setItemValue] = useState(null);
-    const [userType,setUserType] = useState(null);
-  
-    useEffect(() => {
-      if(sessionStorage.getItem("AUTH_TOKEN") !== null){
-        let user = JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
-        setUserType(user.userType);
-  
-      }
-   
-    }); 
+  const [itemValue, setItemValue] = useState(null);
+  const [userType, setUserType] = useState(null);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("AUTH_TOKEN") !== null) {
+      let user = JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
+      setUserType(user.userType);
+
+    }
+
+  });
 
   return (
-   <div className={classes.root}>
-     
-     
+    <div className={classes.root}>
 
-      {userType === 'patient'? (
+
+
+      {userType === 'patient' ? (
 
         <>
-        <PatientHP />
+          <PatientHP />
         </>
-      ):null}
+      ) : null}
 
-{userType === 'counselor'? (
+      {userType === 'counselor' ? (
 
-<>
-<CounselorHP />
-</>
-):null}
+        <>
+          <CounselorHP />
+        </>
+      ) : null}
 
-{userType === 'manager'? (
+      {userType === 'manager' ? (
 
-<>
-<ManagerHP />
-</>
-):null}
+        <>
+          <ManagerHP />
+        </>
+      ) : null}
 
-{userType === 'doctor'? (
+      {userType === 'doctor' ? (
 
-<>
-<DoctorHP />
-</>
-):null}
-<SideMenu loginCallBack={loginCallBack}/>
-</div>
+        <>
+          <DoctorHP />
+        </>
+      ) : null}
+      <SideMenu loginCallBack={loginCallBack} />
+    </div>
   );
 }
 

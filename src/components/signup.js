@@ -11,7 +11,7 @@ import * as Yup from 'yup'
 import "yup-phone";
 import { signUp } from '../services/loginAPI';
 
-const Signup = ({loginCallBack}) => {
+const Signup = ({ loginCallBack }) => {
     const [errMsg, setErrMsg] = useState("");
     const [accountType, setAccountType] = useState("patient");
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
@@ -32,29 +32,30 @@ const Signup = ({loginCallBack}) => {
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matched").required("Required"),
         registration_number: Yup.string().length(5, "Registeration number is 5 character long")
     })
-    const handleChange = (event) =>{
+    const handleChange = (event) => {
         setAccountType(event.target.value);
     }
     const onSubmit = (values, props) => {
         //TODO send user type and other information
         console.log("entered");
-        signUp({...values, age: 18, last_name: values.name
-        ,gender: "male", userType: accountType
+        signUp({
+            ...values, age: 18, last_name: values.name
+            , gender: "male", userType: accountType
         })
-        .then(data => {
-            console.log(data);
-            if(data.errors) {
-                setErrMsg(data.errors[0]);
-            } else {
-                loginCallBack();
-                console.log(values);
-                props.resetForm();
-                setErrMsg("");
-            }
-        },
-        (error) => {
-            setErrMsg("Unable to regiester")
-        }).finally(() =>  props.setSubmitting(false));
+            .then(data => {
+                console.log(data);
+                if (data.errors) {
+                    setErrMsg(data.errors[0]);
+                } else {
+                    loginCallBack();
+                    console.log(values);
+                    props.resetForm();
+                    setErrMsg("");
+                }
+            },
+                (error) => {
+                    setErrMsg("Unable to regiester")
+                }).finally(() => props.setSubmitting(false));
     }
     return (
         <Grid>
@@ -69,8 +70,8 @@ const Signup = ({loginCallBack}) => {
                 <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {(props) => (
                         <Form>
-                            <div style={{color: 'red'}}>
-                            {errMsg}
+                            <div style={{ color: 'red' }}>
+                                {errMsg}
                             </div>
                             <Field required as={TextField} fullWidth name="name" label='Name'
                                 placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
@@ -83,24 +84,24 @@ const Signup = ({loginCallBack}) => {
                                 width: '100%',
                                 padding: '12px'
                             }}>
-                                        <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={accountType}
-                                            label="accountType"
-                                            onChange={handleChange}
-                                        >
-                                            <MenuItem value='patient'>Patient</MenuItem>
-                                            <MenuItem value='doctor'>Doctor</MenuItem>
-                                            <MenuItem value='counselor'>Counselor</MenuItem>
-                                            <MenuItem value='manager'>Manager</MenuItem>
-                                        </Select>
+                                <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={accountType}
+                                    label="accountType"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value='patient'>Patient</MenuItem>
+                                    <MenuItem value='doctor'>Doctor</MenuItem>
+                                    <MenuItem value='counselor'>Counselor</MenuItem>
+                                    <MenuItem value='manager'>Manager</MenuItem>
+                                </Select>
                             </FormControl>
 
                             {(accountType === 'doctor' || accountType === 'counselor') && <>
                                 <Field as={TextField} required fullWidth name='registration_number'
-                                label='Registration Number' placeholder="Enter your Registration number"
+                                    label='Registration Number' placeholder="Enter your Registration number"
                                 />
                                 <FormHelperText><ErrorMessage name="registration_number" /></FormHelperText>
                             </>
@@ -111,7 +112,7 @@ const Signup = ({loginCallBack}) => {
                             <Field as={TextField} required fullWidth name="confirmPassword" type="password"
                                 label='Confirm Password' placeholder="Confirm your password"
                                 helperText={<ErrorMessage name="confirmPassword" />} />
-                            <Button style={{margin: '   15px'}} type='submit' variant='contained' disabled={props.isSubmitting}
+                            <Button style={{ margin: '   15px' }} type='submit' variant='contained' disabled={props.isSubmitting}
                                 color='primary'>{props.isSubmitting ? "Loading" : "Sign up"}</Button>
                         </Form>
                     )}
