@@ -19,11 +19,11 @@ const Login = ({ handleChange, loginCallBack}) => {
         setAccountType(event.target.value);
             }
     const initialValues = {
-        username: '',
+        email: '',
         password: ''
     }
     const validationSchema = Yup.object().shape({
-        username: Yup.string().email('please enter valid email').required("Required"),
+        email: Yup.string().email('please enter valid email').required("Required"),
         password: Yup.string().required("Required")
     })
     const onSubmit = (values, props) => {
@@ -73,9 +73,9 @@ const Login = ({ handleChange, loginCallBack}) => {
                                             <MenuItem value='manager'>Manager</MenuItem>
                                         </Select>
                             </FormControl>
-                            <Field as={TextField} label='Email' name="Email"
+                            <Field as={TextField} label='email' name="email"
                                 placeholder='Enter email' fullWidth required
-                                helperText={<ErrorMessage name="Email" />}
+                                helperText={<ErrorMessage name="email" />}
                             />
                             <Field as={TextField} label='Password' name="password"
                                 placeholder='Enter password' type='password' fullWidth required
