@@ -7,9 +7,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import { logOut } from '../services/loginAPI';
+import { getUserInfo, logOut } from '../services/loginAPI';
 
 const drawerWidth = 240;
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 function SideMenu({ loginCallBack }) {
   const classes = useStyles();
-
+  const user = getUserInfo();
   return (
     <Drawer
       open={true}
@@ -48,23 +48,28 @@ function SideMenu({ loginCallBack }) {
           src='https://as2.ftcdn.net/v2/jpg/05/09/59/75/1000_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg'
           className={classes.bigAvatar}
         />
+        <Typography variant="h4">{user.userType}</Typography>
       </Grid>
       <List>
-        {['Profile', 'Sign Out'].map((text, index) => (
-          <div style={{ display: 'flex' }} onClick={() => {
-            if (index === 1) {
-              logOut();
-              loginCallBack();
-            }
-          }}>
-            <ListItem button key={text}>
-              <ListItemIcon >
-                {index % 2 === 0 ? <AccountCircle /> : <ExitToApp />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          </div>
-        ))}
+        <div style={{ display: 'flex' }}>
+          <ListItem button>
+            <ListItemIcon >
+               <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary={user.last_name} />
+          </ListItem>
+        </div>
+        <div style={{ display: 'flex' }} onClick={() => {
+          logOut();
+          loginCallBack();
+        }}>
+          <ListItem button>
+            <ListItemIcon >
+              <ExitToApp />
+            </ListItemIcon>
+            <ListItemText primary={'Sign Out'} />
+          </ListItem>
+        </div>
       </List>
     </Drawer>
   );

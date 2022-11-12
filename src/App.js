@@ -4,10 +4,11 @@ import './App.css';
 import Home from './components/Home';
 import { BASE_ULR, URLS } from './config/constant';
 import SignInOutContainer from './containers/signInOutContainer';
+import { getUserInfo } from './services/loginAPI';
 
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(JSON.parse(sessionStorage.getItem("AUTH_TOKEN")) !== null);
+  const [loggedIn, setLoggedIn] = useState(getUserInfo() !== null);
   axios.defaults.baseURL = BASE_ULR
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 

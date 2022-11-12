@@ -1,14 +1,13 @@
 
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TopMenu from '../components/TopMenu';
 import SideMenu from '../components/SideMenu';
-import MainContent from '../components/MainContent';
-import Quiz from '../components/Quiz';
 import PatientHP from '../components/PatientHP';
 import CounselorHP from '../components/CounselorHP';
 import DoctorHP from '../components/DoctorHP';
 import ManagerHP from '../components/ManagerHP';
+import { AppBar, Box, Toolbar, Typography } from '@material-ui/core';
+import { getUserInfo } from '../services/loginAPI';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,54 +15,56 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Home({loginCallBack}) {
+function Home({ loginCallBack }) {
   const classes = useStyles();
-    const[itemValue,setItemValue] = useState(null);
-    const [userType,setUserType] = useState(null);
-  
-    useEffect(() => {
-      if(sessionStorage.getItem("AUTH_TOKEN") !== null){
-        let user = JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
-        setUserType(user.userType);
-  
-      }
-   
-    }); 
+  const user = getUserInfo();
+  let userType = user?.userType;
 
   return (
-   <div className={classes.root}>
-     
-     
+    <>
+      <Box sx={{ flexGrow: 1 }} >
+        <AppBar position="static" style={{
+        backgroundColor: "lightseagreen"
+      }}>
+          <Toolbar>
+            <Typography variant="h3" gutterBottom style={{
+              color: "white",
+              margin: "10px"
+            }}>
+              Arogya
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      {userType !== null && <div className={classes.root}>
+        {userType === 'patient' ? (
+          <>
+            <PatientHP />
+          </>
+        ) : null}
 
-      {userType === 'patient'? (
+        {userType === 'counselor' ? (
+          <>
+            <CounselorHP />
+          </>
+        ) : null}
 
-        <>
-        <PatientHP />
-        </>
-      ):null}
+        {userType === 'manager' ? (
 
-{userType === 'counselor'? (
+          <>
+            <ManagerHP />
+          </>
+        ) : null}
 
-<>
-<CounselorHP />
-</>
-):null}
+        {userType === 'doctor' ? (
 
-{userType === 'manager'? (
-
-<>
-<ManagerHP />
-</>
-):null}
-
-{userType === 'doctor'? (
-
-<>
-<DoctorHP />
-</>
-):null}
-<SideMenu loginCallBack={loginCallBack}/>
-</div>
+          <>
+            <DoctorHP />
+          </>
+        ) : null}
+        <SideMenu loginCallBack={loginCallBack} />
+      </div>}
+    </>
   );
 }
 

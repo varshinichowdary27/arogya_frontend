@@ -60,3 +60,5 @@ export const signUp = (userData) => {
 export const logOut = () => {
   sessionStorage.removeItem("AUTH_TOKEN");
 }
+
+export const getUserInfo =  () => JSON.parse(sessionStorage.getItem("AUTH_TOKEN"))
