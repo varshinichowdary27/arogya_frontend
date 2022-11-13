@@ -63,7 +63,7 @@ export const logOut = () => {
 }
 
 export const getAssessmentDetails = (patientEmail) =>{
-var request_url = URLS.get_appointments + "?email_address="+{patientEmail} ;
+var request_url = URLS.get_appointments + "?email_address="+ patientEmail ;
 return axios.get(request_url).then(
   auth => {
     return auth.data.data;

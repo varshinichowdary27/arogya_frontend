@@ -8,11 +8,12 @@ const Quiz = () => {
 	const [displayResult, setDisplayResult] = useState(false);
 	const [startQuiz, setStartQuiz] = useState(true);
 	const [result, setResult] = useState([]);
+
 	const questions = [
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Little interest or pleasure in doing things?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -22,7 +23,7 @@ const Quiz = () => {
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Feeling down, depressed or hopless?',
 
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -31,7 +32,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Trouble falling asleep, staying asleep, or sleeping too much?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -40,7 +41,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Feeling tired or having little energy?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -49,7 +50,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Poor appetite or overeating?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -58,7 +59,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Feeling bad about yourself - or that you are a failure or have let yourself or your family down?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -67,7 +68,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Trouble concentrating on things, such as reading the newspaper or watching television?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -76,7 +77,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Moving or speaking so slowly that other people could have noticed. Or, the opposite - being so fidgety or restless that you have been moving around a lot more than usual?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -85,7 +86,7 @@ const Quiz = () => {
 		{
 			questionText: 'Over the past 2 weeks, how often have you been bothered by any of the following problems: Thoughts that you would be better off dead or of hurting yourself in some way?',
 			answerOptions: [
-				{ answerText: 'Not At all' },
+				{ answerText: 'Not At All' },
 				{ answerText: 'Several Days' },
 				{ answerText: 'More Than Half the Days' },
 				{ answerText: 'Nearly Every Day' },
@@ -117,7 +118,7 @@ const Quiz = () => {
 			{displayResult ? (
 				<div className="startQuiz">
 					<p>Good Bye we will examine the results and counsellor will book the appointment shortly</p>
-					<button className="NextButton" style={{ display: 'block', textAlign: 'center' }} onClick={() => handleStartQuiz()}>Return to Home</button>
+					<button className="NextButton" style={{ display: 'block', textAlign: 'center' }}>Show Submission</button>
 
 				</div>
 			) : (
