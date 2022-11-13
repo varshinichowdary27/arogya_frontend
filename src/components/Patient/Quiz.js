@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { send_self_Assesment } from '../../services/loginAPI';
-import test from '../../test.jpeg'
-const Quiz = () => {
+
+
+const Quiz = ({ refresh }) => {
 
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -118,7 +119,8 @@ const Quiz = () => {
 			{displayResult ? (
 				<div className="startQuiz">
 					<p>Good Bye we will examine the results and counsellor will book the appointment shortly</p>
-					<button className="NextButton" style={{ display: 'block', textAlign: 'center' }}>Show Submission</button>
+					<button className="NextButton" style={{ display: 'block', textAlign: 'center' }}
+						onClick={() => refresh()}>Show Submission</button>
 
 				</div>
 			) : (
