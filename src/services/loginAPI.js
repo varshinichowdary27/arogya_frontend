@@ -62,6 +62,15 @@ export const logOut = () => {
   sessionStorage.removeItem("AUTH_TOKEN");
 }
 
+export const getAssessmentDetails = (patientEmail) =>{
+var request_url = URLS.get_appointments + "?email_address="+{patientEmail} ;
+return axios.get(request_url).then(
+  auth => {
+    return auth.data.data;
+  }
+);
+}
+
 export const getPatientList = () => axios.get(URLS.get_appointments).then(
   auth => {
     return auth.data.data;

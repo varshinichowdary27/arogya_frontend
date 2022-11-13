@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { send_self_Assesment } from '../services/loginAPI';
-import test from '../test.jpeg'
+import { send_self_Assesment } from '../../services/loginAPI';
+import test from '../../test.jpeg'
 const Quiz = () => {
 
 	const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -113,9 +113,7 @@ const Quiz = () => {
 
 	return (
 		<div>
-			<div >
-				<img src={test} style={{ width: '100%', height: '50vh' }} alt="quiz" />
-			</div>
+
 			{displayResult ? (
 				<div className="startQuiz">
 					<p>Good Bye we will examine the results and counsellor will book the appointment shortly</p>

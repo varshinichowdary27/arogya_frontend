@@ -2,7 +2,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SideMenu from '../components/SideMenu';
-import PatientHP from '../components/PatientHP';
+import PatientHP from '../components/Patient/PatientHP';
 import CounselorHP from './Counselor/counselorHP';
 import DoctorHP from '../components/DoctorHP';
 import ManagerHP from '../components/ManagerHP';
