@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList } from '../../services/loginAPI';
-import { Alert } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Tooltip } from '@material-ui/core';
 
@@ -28,14 +28,14 @@ function Row(props) {
         <React.Fragment>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
-                <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
+                    <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setOpen(!open)}
+                        >
+                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
                     </Tooltip>
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -109,44 +109,56 @@ export const PatientList = () => {
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
     const [errMsg, setErrMsg] = React.useState("");
+    const [loading, setloading] = React.useState(true);
     React.useEffect(() => {
-        getPatientList().then(
-            patientList => patientList.map(patient => dataMapper(patient)),
-        ).then(
-            patientList => setPatientList(patientList),
-        ).catch(() => setErrMsg("Unable to fetch patient List"))
+        setloading(true);
+        setPatientList([]);
+        setErrMsg("");
+        getPatientList()
+            .then(data => data.details)
+            .then(patientList => patientList.map(patient => dataMapper(patient)))
+            .then(patientList => {
+                setPatientList(patientList);
+            })
+            .catch(() => {
+                setErrMsg("Unable to fetch patient List");
+            }).finally(() => setloading(false))
     }, [reload])
     return (
         <>
-            {errMsg !== "" && <Alert severity="error">{errMsg}</Alert>}
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>
-                                <Tooltip title="Reload patient List">
-                                    <IconButton
-                                        aria-label="expand row"
-                                        size="small"
-                                        onClick={() => setReload(!reload)}
-                                    >
-                                        <ReplayIcon></ReplayIcon>
-                                    </IconButton>
-                                </Tooltip>
-                            </TableCell>
-                            <TableCell>Patient Name</TableCell>
-                            <TableCell align="right">Email ID</TableCell>
-                            <TableCell align="right">Mobile Number</TableCell>
+            {loading ? (<CircularProgress />) : (
+                <>
+                    {errMsg !== "" && <Alert severity="error">{errMsg}</Alert>}
+                    <TableContainer component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Tooltip title="Reload patient List">
+                                            <IconButton
+                                                aria-label="expand row"
+                                                size="small"
+                                                onClick={() => setReload(!reload)}
+                                            >
+                                                <ReplayIcon></ReplayIcon>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell>Patient Name</TableCell>
+                                    <TableCell align="right">Email ID</TableCell>
+                                    <TableCell align="right">Mobile Number</TableCell>
 
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {patientList.map((patient, index) => (
-                            <Row key={index} row={patient} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {patientList.map((patient, index) => (
+                                    <Row key={index} row={patient} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </>
+            )}
         </>
     );
 }
