@@ -33,7 +33,9 @@ export const AppointmentDialog = ({
       <DialogContent>
         <DialogContentText>
           You are about to schedule 30 min appoinment with {patientDetails.lastName}.
+          <div>
           To complete this action, Select Date and start time below and click <i>Confirm</i> to Confirm appoinment.
+          </div>
         </DialogContentText>
         <DialogContentText style={{ padding: "30px 0px 0px" }}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
