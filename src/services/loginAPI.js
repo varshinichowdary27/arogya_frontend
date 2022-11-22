@@ -77,6 +77,12 @@ export const getPatientList = () => axios.get(URLS.get_appointments).then(
   }
 );
 
+export const deleteAssesment = ({patientId}) => axios.delete(URLS.delete_assesment + patientId).then(
+  auth => {
+    return auth.data.data;
+  }
+);
+
 export const getUserInfo =  () => JSON.parse(sessionStorage.getItem("AUTH_TOKEN"));
 
 export const getUserTypeToDisplay=  (userData) => {
