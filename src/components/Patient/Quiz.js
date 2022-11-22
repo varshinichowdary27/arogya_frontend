@@ -132,7 +132,7 @@ const Quiz = ({ refresh }) => {
 							<p style={{ display: 'block', textAlign: 'justify' }}>
 								By clicking 'Start', you acknowledge that the Arogya is only an educational tool and is not a substitute for a diagnosis, consultation, or visit with your doctor or other healthcare provider.
 							</p>
-							<button className="NextButton" style={{ display: 'block', textAlign: 'center' }} onClick={() => handleStartQuiz()}>Start Quiz</button>
+							<button className="NextButton" style={{ display: 'block', textAlign: 'center' }} onClick={() => handleStartQuiz()}>Start Self Assessment</button>
 							<p style={{ display: 'block', textAlign: 'justify' }}> This [course] is not to be used for diagnosis, treatment or referral services. The materials in CAMHs online courses are only educational tools. They are of general value, and may not apply to specific situations. They are not considered professional advice or guidance for a particular case. Online resources are not a substitute for the personalized judgment and care of a trained medical professional</p>
 						</div>
 
