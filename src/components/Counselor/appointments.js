@@ -16,18 +16,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList } from '../../services/loginAPI';
 import { Alert, CircularProgress } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Tooltip } from '@material-ui/core';
 import { DeleteDialog } from './DeleteDialog';
 import { AssignDoctorDialog } from './AssignDoctorDialog';
 import { AppointmentDialog } from './AppointmentDialog';
+import moment from 'moment';
 
 
 
 function Row(props) {
-    const { row, doctors } = props;
+    const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [deleteOpen, setDeleteOpen] = React.useState(false);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
@@ -36,7 +34,7 @@ function Row(props) {
     return (
         <React.Fragment>
             {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)}></DeleteDialog>}
-            {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)}></AssignDoctorDialog>}
+            {doctorOpen && <AssignDoctorDialog patientDetails={row} handleClose={() => setDoctorOpen(false)}></AssignDoctorDialog>}
             {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)}></AppointmentDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
@@ -50,44 +48,12 @@ function Row(props) {
                         </IconButton>
                     </Tooltip>
                 </TableCell>
+                <TableCell align="right">{row.Appointment_start_time}</TableCell>
                 <TableCell component="th" scope="row">
                     {row.lastName}
                 </TableCell>
                 <TableCell align="right">{row.emailAddress}</TableCell>
                 <TableCell align="right">{row.phoneNumber}</TableCell>
-                <TableCell size='small' align="center">
-                    <Tooltip title="Click to Assign Doctor to patient">
-                        <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => setDoctorOpen(true)}
-                        >
-                            <AddCircleIcon color="primary"></AddCircleIcon>
-                        </IconButton>
-                    </Tooltip>
-                </TableCell>
-                <TableCell size='small' align="center">
-                    <Tooltip title="Click to Schedule Appointment with patient">
-                        <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => setSelfOpen(true)}
-                        >
-                            <ScheduleIcon color='action'></ScheduleIcon>
-                        </IconButton>
-                    </Tooltip>
-                </TableCell>
-                <TableCell size='small' align="center">
-                    <Tooltip title="Click to Delete patient's Assesement">
-                        <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => setDeleteOpen(true)}
-                        >
-                            <DeleteIcon color='error'></DeleteIcon>
-                        </IconButton>
-                    </Tooltip>
-                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -139,16 +105,26 @@ Row.propTypes = {
 const dataMapper = ({ question_answers, patient: {
     lastName,
     emailAddress,
+    appointment_start_time,
+    counsellor_id,
     phoneNumber } }) => {
     return {
         lastName,
         emailAddress,
         phoneNumber,
+        appointment_start_date: appointment_start_time,
+        appointment_start_time,
+        counsellor_id,
         questions_list: question_answers.questions_list
     };
 }
+const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
+const comparotor = 
+    (a,b) => new moment(a).format(dateTimeFormat) - new moment(b).format(dateTimeFormat);
 
-export const PatientList = ({doctors}) => {
+
+export const Appointments = ({isConsullor}) => {
+
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
     const [errMsg, setErrMsg] = React.useState("");
@@ -159,14 +135,17 @@ export const PatientList = ({doctors}) => {
         setErrMsg("");
         getPatientList()
             .then(data => data.details)
-            .then(patientList => patientList.map(patient => dataMapper(patient)))
+            .then(patientList => patientList.map(patient => dataMapper(patient))
+                .filter(patient => patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] != null 
+                    && patient.appointment_start_time != null)
+            )
             .then(patientList => {
-                setPatientList(patientList);
+                setPatientList(patientList.sort(comparotor));
             })
             .catch(() => {
                 setErrMsg("Unable to fetch patient List");
             }).finally(() => setloading(false))
-    }, [reload])
+    }, [reload, isConsullor])
     return (
         <>
             {loading ? (<CircularProgress />) : (
@@ -187,17 +166,16 @@ export const PatientList = ({doctors}) => {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
+                                    <TableCell>Appoinment Date</TableCell>
+                                    <TableCell>Appoinment Time</TableCell>
                                     <TableCell>Patient Name</TableCell>
                                     <TableCell align="right">Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
-                                    <TableCell style={{ width: "90px" }} size='small' align="center">Assign Doctor</TableCell>
-                                    <TableCell style={{ width: "144px" }} size='small' align="center">Schedule Appointment</TableCell>
-                                    <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} doctors={doctors} />
+                                    <Row key={index} row={patient} />
                                 ))}
                             </TableBody>
                         </Table>

@@ -5,6 +5,8 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { PatientList } from './patientList';
+import { Appointments } from './appointments';
+import { getDoctor } from '../../services/loginAPI';
 
 const width = 700;
 
@@ -14,11 +16,16 @@ const widthModifier = {
 
 export default function CounselorHP() {
   const [value, setValue] = React.useState('1');
+  const [doctors, setDoctors] = React.useState([]);
 
-  const handleChange = (event, newValue: string) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  React.useEffect(() => {
+    getDoctor()
+    .then(doctors => setDoctors(doctors))
+  })
 
   return (
     <Box sx={{ width: '500%', typography: 'body1' }}>
@@ -26,13 +33,11 @@ export default function CounselorHP() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="black" indicatorColor="secondary" centered>
             <Tab label="Patients List" value="1" style={widthModifier} />
-            <Tab label="Doctors List" value="2" style={widthModifier} />
-            <Tab label="Appointments List" value="3" style={widthModifier} />
+            <Tab label="Appointments List" value="2" style={widthModifier} />
           </TabList>
         </Box>
-        <TabPanel value="1"><PatientList /></TabPanel>
-        <TabPanel value="2">Doctors List</TabPanel>
-        <TabPanel value="3">Appointments List</TabPanel>
+        <TabPanel value="1"><PatientList doctors={doctors}/></TabPanel>
+        <TabPanel value="2"><Appointments isConsullor></Appointments></TabPanel>
       </TabContext>
     </Box>
   );

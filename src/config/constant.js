@@ -7,5 +7,7 @@ export const URLS = {
     register_doctor: '/register_doctor',
     register_appointment: '/register_appointment',
     get_appointments: '/get_appointments',
-    delete_assesment: '/deleteAssement/'
+    delete_assesment: '/deleteAssement/',
+    list_doctor: '/doctors/',
+    changeAppointment: '/appointments/'
 }

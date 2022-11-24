@@ -16,7 +16,6 @@ export const login = ({ email, password, userType }) => axios.get(URLS.login, {
 );
 
 export const send_self_Assesment = (email_address, questions_list) => {
-  console.log(questions_list);
   return axios.post(URLS.register_appointment,
     {
       email_address: email_address,
@@ -101,3 +100,24 @@ export const getUserTypeToDisplay=  (userData) => {
   }
   return userType;
 };
+
+export const appointmentUpdate = (patientId, payload) => axios.put(URLS.changeAppointment +patientId, payload)
+.then(
+  auth => {
+    return auth.data.data;
+  }
+);
+
+export const appointmentDelete = (patientId) => axios.delete(URLS.changeAppointment +patientId)
+.then(
+  auth => {
+    return auth.data.data;
+  }
+);
+
+export const getDoctor = () => axios.get(URLS.list_doctor)
+.then(
+  auth => {
+    return auth.data.data;
+  }
+);

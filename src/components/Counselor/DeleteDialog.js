@@ -6,15 +6,24 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import WarningIcon from '@mui/icons-material/Warning';
+import { appointmentDelete } from '../../services/loginAPI';
 
 export const DeleteDialog = ({
   patientDetails,
   handleClose
 }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const close = () => !isLoading && handleClose();
+  const onSubmit = () => {
+    setIsLoading(true);
+    appointmentDelete.apply(patientDetails.id)
+      .then()
+      .finally(() => setIsLoading(false) && close())
+  }
   return (
     <Dialog
       open
-      onClose={handleClose}
+      onClose={close}
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
@@ -31,10 +40,10 @@ export const DeleteDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions style={{ padding: "20px" }}>
-        <Button variant="contained" color="error" autoFocus onClick={handleClose}>
+        <Button disabled={isLoading}variant="contained" color="error" autoFocus onClick={onSubmit}>
           Delete
         </Button>
-        <Button variant="outlined" onClick={handleClose} autoFocus>
+        <Button disabled={isLoading} variant="outlined" onClick={close} autoFocus>
           Cancel
         </Button>
       </DialogActions>
