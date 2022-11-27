@@ -179,7 +179,7 @@ export const Appointments = () => {
                                     <TableCell>Patient Name</TableCell>
                                     <TableCell align="right">Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
-                                    <TableCell style={{ width: "90px" }} size='small' align="center">Assign Doctor</TableCell>
+                                    <TableCell style={{ width: "90px" }} size='small' align="center">Delete Assesement</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

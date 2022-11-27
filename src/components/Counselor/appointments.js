@@ -20,6 +20,8 @@ import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
 import { AssignDoctorDialog } from './AssignDoctorDialog';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { DeleteDialog } from './DeleteDialog';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -27,9 +29,11 @@ function Row(props) {
     const { row, doctors, reload } = props;
     const [open, setOpen] = React.useState(false);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
 
     return (
         <React.Fragment>
+                        {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)} reload={reload}></DeleteDialog>}
             {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)} reload={reload}></AssignDoctorDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
@@ -58,6 +62,17 @@ function Row(props) {
                             onClick={() => setDoctorOpen(true)}
                         >
                             <AddCircleIcon color="primary"></AddCircleIcon>
+                        </IconButton>
+                    </Tooltip>
+                </TableCell>
+                <TableCell size='small' align="center">
+                    <Tooltip title="Click to Delete patient's Assesement">
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setDeleteOpen(true)}
+                        >
+                            <DeleteIcon color='error'></DeleteIcon>
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -181,6 +196,7 @@ export const Appointments = ({ doctors }) => {
                                     <TableCell align="right">Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
                                     <TableCell style={{ width: "90px" }} size='small' align="center">Assign Doctor</TableCell>
+                                    <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
