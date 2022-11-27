@@ -121,3 +121,77 @@ export const getDoctor = () => axios.get(URLS.list_doctor)
     return auth.data.data;
   }
 );
+export const list_users = () =>
+Promise.all([
+	fetch('https://arogya-spm.herokuapp.com/v1/doctors'),
+	fetch('https://arogya-spm.herokuapp.com/v1/counselors'),
+	fetch('https://arogya-spm.herokuapp.com/v1/patients')
+]).then(function (responses) {
+	// Get a JSON object from each of the responses
+
+	return Promise.all(responses.map(function (response) {
+
+		return response.json()
+	}));
+}).then(function (data) {
+	// Log the data to the console
+	// You would do something with both sets of data here
+    let merged_data;
+
+
+    data[0].data.forEach(object => {
+              object.account_type = 'Doctor';
+            });
+     data[1].data.forEach(object => {
+          object.account_type = 'Counselor';
+        });
+     data[2].data.forEach(object => {
+              object.account_type = 'Patient';
+            });
+
+    merged_data =[].concat(data[0].data,data[1].data,data[2].data);
+
+    return merged_data;
+}).catch(function (error) {
+	// if there's an error, log it
+	console.log(error);
+});
+
+export const perfomDelete =(row) =>{
+if(row.account_type == 'Patient'){
+axios.delete("https://arogya-spm.herokuapp.com/v1/patient?email_address="+row.emailAddress)
+      .then(res => {
+        console.log(res);
+
+
+      })
+
+}
+if(row.account_type == 'Doctor'){
+
+axios.delete("https://arogya-spm.herokuapp.com/v1/doctor?email_address="+row.emailAddress)
+      .then(res => {
+        console.log(res);
+
+
+      })
+}
+if(row.account_type == 'Counselor'){
+axios.delete("https://arogya-spm.herokuapp.com/v1/counselor?email_address="+row.emailAddress)
+      .then(res => {
+        console.log(res);
+
+
+      })
+
+}
+}
+
+export const get_stats_data = () => axios.get("https://arogya-spm.herokuapp.com/v1/report")
+                               .then(
+                                 auth => {
+
+                                   return auth.data.data;
+                                 }
+                               );
+
