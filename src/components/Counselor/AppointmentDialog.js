@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import moment from 'moment';
-import { CircularProgress, Stack, TextField } from '@mui/material';
+import { Alert, CircularProgress, Stack, TextField } from '@mui/material';
 import { appointmentUpdate, getUserInfo } from '../../services/loginAPI';
 
 export const AppointmentDialog = ({
@@ -20,22 +20,26 @@ export const AppointmentDialog = ({
     moment(),
   );
   const [isLoading, setIsLoading] = React.useState(false);
+  const [errMsg, setErrMsg] =React.useState("");
   const close = () => !isLoading && handleClose();
   const counsellor_id = getUserInfo().id
   const onSubmit = () => {
     setIsLoading(true);
     appointmentUpdate(patientDetails.id, { appointment_start_time: value, counsellor_id })
-      .then()
-      .finally(() => {
+    .then(()=> {
+      setErrMsg("");
+      reload();
+      close();
+    }, () => {setErrMsg("Unable to Make Appointment");})
+    .finally(() => {
         setIsLoading(false);
-        reload();
-        close();
       })
   }
 
   const handleChange = (newValue) => {
     setValue(newValue);
   };
+
   return (
     <Dialog
       open
@@ -48,7 +52,11 @@ export const AppointmentDialog = ({
       <DialogContent>
         {/* {isLoading ? <CircularProgress /> :
           (<> */}
+          <DialogContentText>
+            {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
+          </DialogContentText>
             <DialogContentText>
+            {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
               You are about to schedule 30 min appoinment with {patientDetails.lastName}.
               <div>
                 To complete this action, Select Date and start time below and click <i>Confirm</i> to Confirm appoinment.

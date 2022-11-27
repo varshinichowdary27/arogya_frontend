@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
+import { Alert, FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { appointmentUpdate } from '../../services/loginAPI';
 
 export const AssignDoctorDialog = ({
@@ -15,6 +15,7 @@ export const AssignDoctorDialog = ({
   doctors = []
 }) => {
   const [doctor, setDoctor] = React.useState(doctors.length > 0 ? doctors[0] : []);
+  const [errMsg, setErrMsg] =React.useState("");
   const doctorChange = (event) => {
     setDoctor(event.target.value);
   }
@@ -24,11 +25,13 @@ export const AssignDoctorDialog = ({
   const onSubmit = () => {
     setIsLoading(true);
     appointmentUpdate(patientDetails.id, { doctor_id: doctor.id })
-      .then()
-      .finally(() => {
+    .then(()=> {
+      setErrMsg("");
+      reload();
+      close();
+    }, () => {setErrMsg("Unable to Assign Doctor");})
+    .finally(() => {
         setIsLoading(false);
-        reload();
-        close();
       })
   }
   return (
@@ -41,6 +44,9 @@ export const AssignDoctorDialog = ({
         Assign Doctor
       </DialogTitle>
       <DialogContent>
+        <DialogContentText>
+        {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
+        </DialogContentText>
         <DialogContentText>
           You are about to assign patient <i>{patientDetails.lastName}</i> to a Doctor.
           <div>To complete this action, Select Doctor from drop down below and click <i>Confirm</i> to Confirm Assignment.</div>

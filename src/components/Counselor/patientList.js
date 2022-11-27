@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList } from '../../services/loginAPI';
-import { Alert, CircularProgress } from '@mui/material';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ScheduleIcon from '@mui/icons-material/Schedule';
@@ -133,7 +133,7 @@ Row.propTypes = {
         ).isRequired,
         emailAddress: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
-        id : PropTypes.string.isRequired
+        id: PropTypes.string.isRequired
     }).isRequired,
 };
 
@@ -151,11 +151,12 @@ const dataMapper = ({ appointment_id, question_answers, patient: {
     };
 }
 
-export const PatientList = ({doctors}) => {
+export const PatientList = ({ doctors }) => {
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
     const [errMsg, setErrMsg] = React.useState("");
     const [loading, setloading] = React.useState(true);
+    const [success, setSuccess] = React.useState(false);
     React.useEffect(() => {
         setloading(true);
         setPatientList([]);
@@ -201,11 +202,16 @@ export const PatientList = ({doctors}) => {
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} doctors={doctors} reload = {() => {setReload(true)}}/>
+                                    <Row key={index} row={patient} doctors={doctors} reload={() => { setSuccess(true); setReload(true) }} />
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Snackbar open={success} autoHideDuration={6000} onClose={() => setSuccess(false)}>
+                        <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                            Successfully updated Patient's Self-Assesement
+                        </Alert>
+                    </Snackbar>
                 </>
             )}
         </>

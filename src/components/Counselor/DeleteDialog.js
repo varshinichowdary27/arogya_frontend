@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import WarningIcon from '@mui/icons-material/Warning';
 import { appointmentDelete } from '../../services/loginAPI';
+import { Alert } from '@mui/material';
 
 export const DeleteDialog = ({
   patientDetails,
@@ -15,14 +16,17 @@ export const DeleteDialog = ({
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const close = () => !isLoading && handleClose();
+  const [errMsg, setErrMsg] =React.useState("");
   const onSubmit = () => {
     setIsLoading(true);
     appointmentDelete(patientDetails.id)
-      .then()
-      .finally(() => {
+    .then(()=> {
+      setErrMsg("");
+      reload();
+      close();
+    }, () => {setErrMsg("Unable to Delete Assesement");})
+    .finally(() => {
         setIsLoading(false);
-        reload();
-        close();
       })
   }
   return (
@@ -40,6 +44,11 @@ export const DeleteDialog = ({
           padding: "0px 20px"
         }}></WarningIcon>
         <DialogContentText>
+          <p>
+          <DialogContentText>
+            {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
+          </DialogContentText>
+          </p>
           You are about to delete {patientDetails.lastName}'s self-assement.
           This action is permanent. Do you want to Delete?
         </DialogContentText>
