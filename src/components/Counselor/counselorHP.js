@@ -39,7 +39,7 @@ export default function CounselorHP() {
           </TabList>
         </Box>
         <TabPanel value="1"><PatientList doctors={doctors}/></TabPanel>
-        <TabPanel value="2"><Appointments isConsullor></Appointments></TabPanel>
+        <TabPanel value="2"><Appointments doctors={doctors}></Appointments></TabPanel>
       </TabContext>
     </Box>
   );

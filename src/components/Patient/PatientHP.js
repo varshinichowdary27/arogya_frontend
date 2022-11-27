@@ -8,6 +8,7 @@ import { getAssessmentDetails, getUserInfo } from '../../services/loginAPI';
 import { SelfAssessment } from "./SelfAssessment";
 import Quiz from "./Quiz";
 import { Alert, CircularProgress } from '@mui/material';
+import { Appointments } from './appointments';
 const width = 700;
 
 const widthModifier = {
@@ -73,7 +74,7 @@ export default function PatientHP() {
           </>
 
         </TabPanel>
-        <TabPanel value="2">Appointments</TabPanel>
+        <TabPanel value="2"><Appointments></Appointments></TabPanel>
       </TabContext>
     </Box>
   );

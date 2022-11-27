@@ -16,21 +16,24 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList, getUserInfo } from '../../services/loginAPI';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Tooltip } from '@material-ui/core';
-import moment from 'moment';
-import { AssignDoctorDialog } from './AssignDoctorDialog';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { DeleteDialog } from '../Counselor/DeleteDialog';
+import { AppointmentDialog } from '../Counselor/AppointmentDialog';
 
 
 
 function Row(props) {
-    const { row, doctors, reload } = props;
+    const { row, reload } = props;
     const [open, setOpen] = React.useState(false);
-    const [doctorOpen, setDoctorOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
+    const [selfOpen, setSelfOpen] = React.useState(false);
 
     return (
         <React.Fragment>
-            {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)} reload={reload}></AssignDoctorDialog>}
+            {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)} reload={reload}></DeleteDialog>}
+            {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)} reload={reload}></AppointmentDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
@@ -43,21 +46,30 @@ function Row(props) {
                         </IconButton>
                     </Tooltip>
                 </TableCell>
-                <TableCell>{row.appointment_start_date}</TableCell>
-                <TableCell>{row.appointment_start_time}</TableCell>
                 <TableCell component="th" scope="row">
                     {row.lastName}
                 </TableCell>
                 <TableCell align="right">{row.emailAddress}</TableCell>
                 <TableCell align="right">{row.phoneNumber}</TableCell>
                 <TableCell size='small' align="center">
-                    <Tooltip title="Click to Assign Doctor to patient">
+                    <Tooltip title="Click to Schedule Appointment with patient">
                         <IconButton
                             aria-label="expand row"
                             size="small"
-                            onClick={() => setDoctorOpen(true)}
+                            onClick={() => setSelfOpen(true)}
                         >
-                            <AddCircleIcon color="primary"></AddCircleIcon>
+                            <ScheduleIcon color='action'></ScheduleIcon>
+                        </IconButton>
+                    </Tooltip>
+                </TableCell>
+                <TableCell size='small' align="center">
+                    <Tooltip title="Click to Delete patient's Assesement">
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setDeleteOpen(true)}
+                        >
+                            <DeleteIcon color='error'></DeleteIcon>
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -77,8 +89,8 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.questions_list.map((questions) => (
-                                        <TableRow key={questions.date}>
+                                    {row.questions_list.map((questions, index) => (
+                                        <TableRow key={index}>
                                             <TableCell component="th" scope="row">
                                                 {questions.question}
                                             </TableCell>
@@ -106,10 +118,11 @@ Row.propTypes = {
         ).isRequired,
         emailAddress: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired
     }).isRequired,
 };
 
-const dataMapper = ({ appointment_id, appointment_start_time, question_answers, patient: {
+const dataMapper = ({ appointment_id, question_answers, patient: {
     lastName,
     emailAddress,
     phoneNumber,
@@ -118,43 +131,34 @@ const dataMapper = ({ appointment_id, appointment_start_time, question_answers, 
         lastName,
         emailAddress,
         phoneNumber,
-        appointment_start_date: new moment(appointment_start_time).format('YYYY-MM-DD'),
-        appointment_start_time: new moment(appointment_start_time).format('HH:mm:ss'),
         id: appointment_id,
         questions_list: question_answers.questions_list
     };
 }
-const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
-const comparotor = 
-    (a,b) => new moment(a).format(dateTimeFormat) - new moment(b).format(dateTimeFormat);
 
-
-export const Appointments = ({ doctors }) => {
-
+export const PatientList = () => {
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
     const [errMsg, setErrMsg] = React.useState("");
     const [loading, setloading] = React.useState(true);
     const [success, setSuccess] = React.useState(false);
-    const id = getUserInfo().id
+    const doctor_id = getUserInfo().id;
     React.useEffect(() => {
         setloading(true);
         setPatientList([]);
         setErrMsg("");
         getPatientList()
             .then(data => data.details)
-            .then(data => data.filter(patient => patient.counsellor_id != null 
-            && patient.counsellor_id === id
-            && patient.doctor_id == null 
-                && patient.appointment_start_time != null))
+            .then(data => data.filter(patient =>  patient.doctor_id === doctor_id 
+            && patient.appointment_start_time == null))
             .then(patientList => patientList.map(patient => dataMapper(patient)))
             .then(patientList => {
-                setPatientList(patientList.sort(comparotor));
+                setPatientList(patientList);
             })
             .catch(() => {
                 setErrMsg("Unable to fetch patient List");
             }).finally(() => setloading(false))
-    }, [reload, id])
+    }, [doctor_id, reload])
     return (
         <>
             {loading ? (<CircularProgress />) : (
@@ -175,17 +179,16 @@ export const Appointments = ({ doctors }) => {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell>Appoinment Date</TableCell>
-                                    <TableCell>Appoinment Time</TableCell>
                                     <TableCell>Patient Name</TableCell>
                                     <TableCell align="right">Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
-                                    <TableCell style={{ width: "90px" }} size='small' align="center">Assign Doctor</TableCell>
+                                    <TableCell style={{ width: "144px" }} size='small' align="center">Schedule Appointment</TableCell>
+                                    <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} doctors={doctors} reload={() => { setSuccess(true); setReload(true) }}/>
+                                    <Row key={index} row={patient} reload={() => { setSuccess(true); setReload(true) }} />
                                 ))}
                             </TableBody>
                         </Table>

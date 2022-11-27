@@ -14,7 +14,8 @@ import { appointmentUpdate, getUserInfo } from '../../services/loginAPI';
 export const AppointmentDialog = ({
   patientDetails,
   handleClose,
-  reload
+  reload,
+  isConsullor
 }) => {
   const [value, setValue] = React.useState(
     moment(),
@@ -22,10 +23,12 @@ export const AppointmentDialog = ({
   const [isLoading, setIsLoading] = React.useState(false);
   const [errMsg, setErrMsg] =React.useState("");
   const close = () => !isLoading && handleClose();
-  const counsellor_id = getUserInfo().id
+  const id = getUserInfo().id
   const onSubmit = () => {
     setIsLoading(true);
-    appointmentUpdate(patientDetails.id, { appointment_start_time: value, counsellor_id })
+    const patient = { appointment_start_time: value };
+    patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] = id;
+    appointmentUpdate(patientDetails.id, patient)
     .then(()=> {
       setErrMsg("");
       reload();

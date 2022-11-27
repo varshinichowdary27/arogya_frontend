@@ -37,7 +37,7 @@ function Row(props) {
         <React.Fragment>
             {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)} reload={reload}></DeleteDialog>}
             {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)} reload={reload}></AssignDoctorDialog>}
-            {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)} reload={reload}></AppointmentDialog>}
+            {selfOpen && <AppointmentDialog isConsullor patientDetails={row} handleClose={() => setSelfOpen(false)} reload={reload}></AppointmentDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">

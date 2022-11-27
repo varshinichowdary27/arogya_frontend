@@ -18,19 +18,19 @@ import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
-import { AssignDoctorDialog } from './AssignDoctorDialog';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteDialog } from '../Counselor/DeleteDialog';
 
 
 
 function Row(props) {
-    const { row, doctors, reload } = props;
+    const { row, reload } = props;
     const [open, setOpen] = React.useState(false);
-    const [doctorOpen, setDoctorOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
 
     return (
         <React.Fragment>
-            {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)} reload={reload}></AssignDoctorDialog>}
+            {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)} reload={reload}></DeleteDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
@@ -51,13 +51,13 @@ function Row(props) {
                 <TableCell align="right">{row.emailAddress}</TableCell>
                 <TableCell align="right">{row.phoneNumber}</TableCell>
                 <TableCell size='small' align="center">
-                    <Tooltip title="Click to Assign Doctor to patient">
+                    <Tooltip title="Click to Delete patient's Assesement">
                         <IconButton
                             aria-label="expand row"
                             size="small"
-                            onClick={() => setDoctorOpen(true)}
+                            onClick={() => setDeleteOpen(true)}
                         >
-                            <AddCircleIcon color="primary"></AddCircleIcon>
+                            <DeleteIcon color='error'></DeleteIcon>
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -129,7 +129,7 @@ const comparotor =
     (a,b) => new moment(a).format(dateTimeFormat) - new moment(b).format(dateTimeFormat);
 
 
-export const Appointments = ({ doctors }) => {
+export const Appointments = () => {
 
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
@@ -145,7 +145,6 @@ export const Appointments = ({ doctors }) => {
             .then(data => data.details)
             .then(data => data.filter(patient => patient.counsellor_id != null 
             && patient.counsellor_id === id
-            && patient.doctor_id == null 
                 && patient.appointment_start_time != null))
             .then(patientList => patientList.map(patient => dataMapper(patient)))
             .then(patientList => {
@@ -185,7 +184,7 @@ export const Appointments = ({ doctors }) => {
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} doctors={doctors} reload={() => { setSuccess(true); setReload(true) }}/>
+                                    <Row key={index} row={patient} reload={() => { setSuccess(true); setReload(true) }}/>
                                 ))}
                             </TableBody>
                         </Table>

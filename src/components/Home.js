@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SideMenu from '../components/SideMenu';
 import PatientHP from '../components/Patient/PatientHP';
 import CounselorHP from './Counselor/counselorHP';
-import DoctorHP from '../components/DoctorHP';
+import DoctorHP from '../components/doctor/DoctorHP';
 import ManagerHP from '../components/ManagerHP';
 import { AppBar, Box, Toolbar, Typography } from '@material-ui/core';
 import { getUserInfo } from '../services/loginAPI';
