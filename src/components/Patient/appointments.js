@@ -154,13 +154,13 @@ export const Appointments = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Tooltip title="Reload patient List">
+                                        <Tooltip title="Reload Appointment Details">
                                             <IconButton
                                                 aria-label="expand row"
                                                 size="small"
                                                 onClick={() => setReload(!reload)}
                                             >
-                                                <ReplayIcon></ReplayIcon>
+                                                <ReplayIcon>Reload Appointment Details</ReplayIcon>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
