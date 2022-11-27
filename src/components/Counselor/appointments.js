@@ -154,7 +154,7 @@ export const Appointments = ({ doctors }) => {
             .catch(() => {
                 setErrMsg("Unable to fetch patient List");
             }).finally(() => setloading(false))
-    }, [reload, id])
+    }, [reload])
     return (
         <>
             {loading ? (<CircularProgress />) : (

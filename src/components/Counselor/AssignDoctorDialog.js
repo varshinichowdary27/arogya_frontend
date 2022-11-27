@@ -24,7 +24,7 @@ export const AssignDoctorDialog = ({
   const close = () => !isLoading && handleClose();
   const onSubmit = () => {
     setIsLoading(true);
-    appointmentUpdate(patientDetails.id, { doctor_id: doctor.id })
+    appointmentUpdate(patientDetails.id, { doctor_id: doctor.id, appointment_start_time: null})
     .then(()=> {
       setErrMsg("");
       reload();
