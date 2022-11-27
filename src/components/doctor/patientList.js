@@ -49,7 +49,7 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.lastName}
                 </TableCell>
-                <TableCell align="right">{row.emailAddress}</TableCell>
+                <TableCell>{row.emailAddress}</TableCell>
                 <TableCell align="right">{row.phoneNumber}</TableCell>
                 <TableCell size='small' align="center">
                     <Tooltip title="Click to Schedule Appointment with patient">
@@ -180,7 +180,7 @@ export const PatientList = () => {
                                         </Tooltip>
                                     </TableCell>
                                     <TableCell>Patient Name</TableCell>
-                                    <TableCell align="right">Email ID</TableCell>
+                                    <TableCell>Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
                                     <TableCell style={{ width: "144px" }} size='small' align="center">Schedule Appointment</TableCell>
                                     <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>
