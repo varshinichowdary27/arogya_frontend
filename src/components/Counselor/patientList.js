@@ -27,7 +27,7 @@ import { AppointmentDialog } from './AppointmentDialog';
 
 
 function Row(props) {
-    const { row, doctors } = props;
+    const { row, doctors, reload } = props;
     const [open, setOpen] = React.useState(false);
     const [deleteOpen, setDeleteOpen] = React.useState(false);
     const [doctorOpen, setDoctorOpen] = React.useState(false);
@@ -35,9 +35,9 @@ function Row(props) {
 
     return (
         <React.Fragment>
-            {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)}></DeleteDialog>}
-            {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)}></AssignDoctorDialog>}
-            {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)}></AppointmentDialog>}
+            {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)} reload={reload}></DeleteDialog>}
+            {doctorOpen && <AssignDoctorDialog patientDetails={row} doctors={doctors} handleClose={() => setDoctorOpen(false)} reload={reload}></AssignDoctorDialog>}
+            {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)} reload={reload}></AppointmentDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
@@ -104,8 +104,8 @@ function Row(props) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.questions_list.map((questions) => (
-                                        <TableRow key={questions.date}>
+                                    {row.questions_list.map((questions, index) => (
+                                        <TableRow key={index}>
                                             <TableCell component="th" scope="row">
                                                 {questions.question}
                                             </TableCell>
@@ -124,7 +124,7 @@ function Row(props) {
 
 Row.propTypes = {
     row: PropTypes.shape({
-        phoneNumber: PropTypes.number.isRequired,
+        phoneNumber: PropTypes.string.isRequired,
         questions_list: PropTypes.arrayOf(
             PropTypes.shape({
                 question: PropTypes.string.isRequired,
@@ -133,17 +133,20 @@ Row.propTypes = {
         ).isRequired,
         emailAddress: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
+        id : PropTypes.string.isRequired
     }).isRequired,
 };
 
-const dataMapper = ({ question_answers, patient: {
+const dataMapper = ({ appointment_id, question_answers, patient: {
     lastName,
     emailAddress,
-    phoneNumber } }) => {
+    phoneNumber,
+    id } }) => {
     return {
         lastName,
         emailAddress,
         phoneNumber,
+        id: appointment_id,
         questions_list: question_answers.questions_list
     };
 }
@@ -159,6 +162,7 @@ export const PatientList = ({doctors}) => {
         setErrMsg("");
         getPatientList()
             .then(data => data.details)
+            .then(data => data.filter(patient => patient['counsellor_id'] == null && patient['doctor_id'] == null && patient.appointment_start_time == null))
             .then(patientList => patientList.map(patient => dataMapper(patient)))
             .then(patientList => {
                 setPatientList(patientList);
@@ -197,7 +201,7 @@ export const PatientList = ({doctors}) => {
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} doctors={doctors} />
+                                    <Row key={index} row={patient} doctors={doctors} reload = {() => {setReload(true)}}/>
                                 ))}
                             </TableBody>
                         </Table>

@@ -13,13 +13,10 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { getPatientList } from '../../services/loginAPI';
+import { getPatientList, getUserInfo } from '../../services/loginAPI';
 import { Alert, CircularProgress } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Tooltip } from '@material-ui/core';
-import { DeleteDialog } from './DeleteDialog';
-import { AssignDoctorDialog } from './AssignDoctorDialog';
-import { AppointmentDialog } from './AppointmentDialog';
 import moment from 'moment';
 
 
@@ -27,15 +24,9 @@ import moment from 'moment';
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-    const [deleteOpen, setDeleteOpen] = React.useState(false);
-    const [doctorOpen, setDoctorOpen] = React.useState(false);
-    const [selfOpen, setSelfOpen] = React.useState(false);
 
     return (
         <React.Fragment>
-            {deleteOpen && <DeleteDialog patientDetails={row} handleClose={() => setDeleteOpen(false)}></DeleteDialog>}
-            {doctorOpen && <AssignDoctorDialog patientDetails={row} handleClose={() => setDoctorOpen(false)}></AssignDoctorDialog>}
-            {selfOpen && <AppointmentDialog patientDetails={row} handleClose={() => setSelfOpen(false)}></AppointmentDialog>}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 <TableCell>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
@@ -48,7 +39,8 @@ function Row(props) {
                         </IconButton>
                     </Tooltip>
                 </TableCell>
-                <TableCell align="right">{row.Appointment_start_time}</TableCell>
+                <TableCell>{row.appointment_start_date}</TableCell>
+                <TableCell>{row.appointment_start_time}</TableCell>
                 <TableCell component="th" scope="row">
                     {row.lastName}
                 </TableCell>
@@ -90,7 +82,7 @@ function Row(props) {
 
 Row.propTypes = {
     row: PropTypes.shape({
-        phoneNumber: PropTypes.number.isRequired,
+        phoneNumber: PropTypes.string.isRequired,
         questions_list: PropTypes.arrayOf(
             PropTypes.shape({
                 question: PropTypes.string.isRequired,
@@ -102,19 +94,18 @@ Row.propTypes = {
     }).isRequired,
 };
 
-const dataMapper = ({ question_answers, patient: {
+const dataMapper = ({ appointment_id, appointment_start_time, question_answers, patient: {
     lastName,
     emailAddress,
-    appointment_start_time,
-    counsellor_id,
-    phoneNumber } }) => {
+    phoneNumber,
+    id } }) => {
     return {
         lastName,
         emailAddress,
         phoneNumber,
-        appointment_start_date: appointment_start_time,
-        appointment_start_time,
-        counsellor_id,
+        appointment_start_date: new moment(appointment_start_time).format('YYYY-MM-DD'),
+        appointment_start_time: new moment(appointment_start_time).format('HH:mm:ss'),
+        id: appointment_id,
         questions_list: question_answers.questions_list
     };
 }
@@ -129,23 +120,24 @@ export const Appointments = ({isConsullor}) => {
     const [reload, setReload] = React.useState(false);
     const [errMsg, setErrMsg] = React.useState("");
     const [loading, setloading] = React.useState(true);
+    const id = getUserInfo().id
     React.useEffect(() => {
         setloading(true);
         setPatientList([]);
         setErrMsg("");
         getPatientList()
             .then(data => data.details)
-            .then(patientList => patientList.map(patient => dataMapper(patient))
-                .filter(patient => patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] != null 
-                    && patient.appointment_start_time != null)
-            )
+            .then(data => data.filter(patient => patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] != null 
+            && patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] === id
+                && patient.appointment_start_time != null))
+            .then(patientList => patientList.map(patient => dataMapper(patient)))
             .then(patientList => {
                 setPatientList(patientList.sort(comparotor));
             })
             .catch(() => {
                 setErrMsg("Unable to fetch patient List");
             }).finally(() => setloading(false))
-    }, [reload, isConsullor])
+    }, [reload, isConsullor, id])
     return (
         <>
             {loading ? (<CircularProgress />) : (

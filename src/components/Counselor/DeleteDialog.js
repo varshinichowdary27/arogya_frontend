@@ -10,15 +10,20 @@ import { appointmentDelete } from '../../services/loginAPI';
 
 export const DeleteDialog = ({
   patientDetails,
-  handleClose
+  handleClose,
+  reload
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const close = () => !isLoading && handleClose();
   const onSubmit = () => {
     setIsLoading(true);
-    appointmentDelete.apply(patientDetails.id)
+    appointmentDelete(patientDetails.id)
       .then()
-      .finally(() => setIsLoading(false) && close())
+      .finally(() => {
+        setIsLoading(false);
+        reload();
+        close();
+      })
   }
   return (
     <Dialog

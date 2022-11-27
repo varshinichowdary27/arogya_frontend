@@ -25,13 +25,15 @@ export default function CounselorHP() {
   React.useEffect(() => {
     getDoctor()
     .then(doctors => setDoctors(doctors))
-  })
+    .finally();
+    return;
+  }, [])
 
   return (
     <Box sx={{ width: '500%', typography: 'body1' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="black" indicatorColor="secondary" centered>
+          <TabList onChange={handleChange} aria-label="lab API tabs example"  indicatorColor="secondary" centered>
             <Tab label="Patients List" value="1" style={widthModifier} />
             <Tab label="Appointments List" value="2" style={widthModifier} />
           </TabList>

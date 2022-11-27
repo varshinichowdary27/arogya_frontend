@@ -101,7 +101,7 @@ export const getUserTypeToDisplay=  (userData) => {
   return userType;
 };
 
-export const appointmentUpdate = (patientId, payload) => axios.put(URLS.changeAppointment +patientId, payload)
+export const appointmentUpdate = (patientId, payload) => axios.put(URLS.changeAppointment, {...payload, appointment_id: patientId})
 .then(
   auth => {
     return auth.data.data;

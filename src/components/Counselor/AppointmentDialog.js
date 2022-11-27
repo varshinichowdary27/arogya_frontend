@@ -9,23 +9,28 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import moment from 'moment';
 import { CircularProgress, Stack, TextField } from '@mui/material';
-import { appointmentUpdate } from '../../services/loginAPI';
+import { appointmentUpdate, getUserInfo } from '../../services/loginAPI';
 
 export const AppointmentDialog = ({
   patientDetails,
-  handleClose
+  handleClose,
+  reload
 }) => {
   const [value, setValue] = React.useState(
     moment(),
   );
   const [isLoading, setIsLoading] = React.useState(false);
   const close = () => !isLoading && handleClose();
-  const counsellor_id = JSON.parse(sessionStorage.getItem("AUTH_TOKEN")).id
+  const counsellor_id = getUserInfo().id
   const onSubmit = () => {
     setIsLoading(true);
-    appointmentUpdate.apply(patientDetails.id, { appointment_start_time: value, counsellor_id })
+    appointmentUpdate(patientDetails.id, { appointment_start_time: value, counsellor_id })
       .then()
-      .finally(() => setIsLoading(false) && close())
+      .finally(() => {
+        setIsLoading(false);
+        reload();
+        close();
+      })
   }
 
   const handleChange = (newValue) => {

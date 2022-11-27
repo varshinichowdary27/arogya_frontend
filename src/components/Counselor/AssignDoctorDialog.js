@@ -11,6 +11,7 @@ import { appointmentUpdate } from '../../services/loginAPI';
 export const AssignDoctorDialog = ({
   patientDetails,
   handleClose,
+  reload,
   doctors = []
 }) => {
   const [doctor, setDoctor] = React.useState(doctors.length > 0 ? doctors[0] : []);
@@ -24,7 +25,11 @@ export const AssignDoctorDialog = ({
     setIsLoading(true);
     appointmentUpdate(patientDetails.id, { doctor_id: doctor.id })
       .then()
-      .finally(() => setIsLoading(false) && close())
+      .finally(() => {
+        setIsLoading(false);
+        reload();
+        close();
+      })
   }
   return (
     <Dialog
@@ -45,16 +50,16 @@ export const AssignDoctorDialog = ({
             spacing={0} >
             {doctors.length > 0 ?
               <FormControl>
-                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                <InputLabel id="demo-simple-select-label">List of Doctors</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={doctor}
-                  label="List of Doctor"
+                  label="List of Doctors"
                   onChange={doctorChange}
                 >
                   {doctors.map((doctorP, index) => (
-                    <MenuItem value={doctorP} key={index}>{doctorP.name}</MenuItem>
+                    <MenuItem value={doctorP} key={index}>{doctorP.lastName}</MenuItem>
                   ))}
                 </Select>
               </FormControl> :
@@ -68,10 +73,10 @@ export const AssignDoctorDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions style={{ padding: "20px" }}>
-        <Button variant="contained" autoFocus onClick={onSubmit}>
+        <Button disabled={isLoading} variant="contained" autoFocus onClick={onSubmit}>
           confirm
         </Button>
-        <Button variant="outlined" onClick={close} autoFocus>
+        <Button disabled={isLoading} variant="outlined" onClick={close} autoFocus>
           Cancel
         </Button>
       </DialogActions>
