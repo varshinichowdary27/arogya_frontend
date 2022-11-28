@@ -69,7 +69,7 @@ export default function PatientHP() {
             {loading ? (<CircularProgress />) : (
               <>
                 {errMsg !== "" && <Alert severity="error">{errMsg}</Alert>}
-                {errMsg === "" && patientList.length === 0 ? <Quiz refresh={() => setReload(!reload)}/> : <SelfAssessment data={{ patientList }} />}
+                {errMsg === "" && patientList.every(a => a.rejected) ? <Quiz refresh={() => setReload(!reload)}/> : <SelfAssessment data={{ patientList }} />}
               </>)}
           </>
 

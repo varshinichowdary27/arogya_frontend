@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList, getUserInfo } from '../../services/loginAPI';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import { Alert, Chip, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ScheduleIcon from '@mui/icons-material/Schedule';
@@ -42,7 +42,9 @@ function Row(props) {
                             size="small"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                                                    {open ? 
+                                <Chip color="primary" icon={<KeyboardArrowUpIcon />} label="Collapse" onClick={() => setOpen(!open)}/>
+                                :  <Chip color="primary" icon={<KeyboardArrowDownIcon />} label="Assessment" onClick={() => setOpen(!open)}/>}
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -58,7 +60,7 @@ function Row(props) {
                             size="small"
                             onClick={() => setSelfOpen(true)}
                         >
-                            <ScheduleIcon color='action'></ScheduleIcon>
+                           <Chip icon={<ScheduleIcon color='action'></ScheduleIcon>} label="Make Appointment" onClick={() => setSelfOpen(true)}/>
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -69,7 +71,7 @@ function Row(props) {
                             size="small"
                             onClick={() => setDeleteOpen(true)}
                         >
-                            <DeleteIcon color='error'></DeleteIcon>
+                            <Chip color="error" icon={<DeleteIcon color='error'></DeleteIcon>} label="Delete" onClick={() => setDeleteOpen(true)} />
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -168,19 +170,16 @@ export const PatientList = () => {
                         <Table aria-label="collapsible table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
+                                  <TableCell style={{ width: "14px" }}>
                                         <Tooltip title="Reload patient List">
-                                            <IconButton
-                                                aria-label="expand row"
+                                            <Chip icon={<ReplayIcon></ReplayIcon>}
+                                                label="Reload" aria-label="expand row"
                                                 size="small"
-                                                onClick={() => setReload(!reload)}
-                                            >
-                                                <ReplayIcon></ReplayIcon>
-                                            </IconButton>
+                                                onClick={() => setReload(!reload)} />
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell>Patient Name</TableCell>
-                                    <TableCell>Email ID</TableCell>
+                                    <TableCell  style={{ width: "20%" }}>Patient Name</TableCell>
+                                    <TableCell  style={{ width: "20%" }}>Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
                                     <TableCell style={{ width: "144px" }} size='small' align="center">Schedule Appointment</TableCell>
                                     <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>

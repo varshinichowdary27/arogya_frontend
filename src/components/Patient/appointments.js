@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getAssessmentDetails, getPatientList, getUserInfo } from '../../services/loginAPI';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import { Alert, Chip, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
@@ -27,27 +27,25 @@ function Row(props) {
     return (
         <React.Fragment>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell>
+                <TableCell style={{ width: "128px" }}>
                     <Tooltip title="Expand/Collapse Patient's Self Assessment Results">
-                        <IconButton
+                        <IconButton 
+                            style={{ width: "128px" }}
                             aria-label="expand row"
                             size="small"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                        {open ? 
+                                <Chip color="primary" icon={<KeyboardArrowUpIcon />} label="Collapse" onClick={() => setOpen(!open)}/>
+                                :  <Chip color="primary" icon={<KeyboardArrowDownIcon />} label="Assessment" onClick={() => setOpen(!open)}/>}
                         </IconButton>
                     </Tooltip>
                 </TableCell>
-                <TableCell align="center">{row.status}</TableCell>
-                <TableCell align="center">{row.assignedTo}</TableCell>
-                <TableCell align="center">{row.appointment_start_date}</TableCell>
-                <TableCell align="center">{row.appointment_start_time}</TableCell>
-                <TableCell align="center">{row.submissionDate}</TableCell>
-                <TableCell component="th" scope="row">
-                    {row.lastName}
-                </TableCell>
-                <TableCell>{row.emailAddress}</TableCell>
-                <TableCell align="right">{row.phoneNumber}</TableCell>
+                <TableCell>{row.status}</TableCell>
+                <TableCell>{row.assignedTo}</TableCell>
+                <TableCell>{row.appointment_start_date}</TableCell>
+                <TableCell>{row.appointment_start_time}</TableCell>
+                <TableCell>{row.submissionDate}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -96,7 +94,8 @@ Row.propTypes = {
     }).isRequired,
 };
 
-const dataMapper = ({ appointment_id, appointment_start_time, question_answers, patient: {
+const dataMapper = ({ appointment_id, status,username,
+    appointment_creation_date, appointment_start_time, question_answers, patient: {
     lastName,
     emailAddress,
     phoneNumber,
@@ -108,9 +107,9 @@ const dataMapper = ({ appointment_id, appointment_start_time, question_answers, 
         appointment_start_date: appointment_start_time !== null? new moment(appointment_start_time).format('YYYY-MM-DD') : "-",
         appointment_start_time: appointment_start_time !== null? new moment(appointment_start_time).format('HH:mm:ss') : "-",
         id: appointment_id,
-        status: "-",
-        assignedTo: "-",
-        submissionDate: appointment_start_time !== null? new moment(appointment_start_time).format('HH:mm:ss') : "-",
+        status: status ? status: "-",
+        assignedTo: username ? username : "-",
+        submissionDate: appointment_start_time !== null? new moment(appointment_creation_date).format('YYYY-MM-DD') : "-",
         questions_list: question_answers.questions_list
     };
 }
@@ -153,25 +152,20 @@ export const Appointments = () => {
                         <Table aria-label="collapsible table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
+                                    <TableCell style={{ width: "40px" }}>
                                         <Tooltip title="Reload Appointment Details">
-                                            <IconButton
-                                                aria-label="expand row"
+                                        <Chip icon={<ReplayIcon></ReplayIcon>}
+                                                label="Reload" aria-label="expand row"
                                                 size="small"
-                                                onClick={() => setReload(!reload)}
-                                            >
-                                                <ReplayIcon>Reload Appointment Details</ReplayIcon>
-                                            </IconButton>
+                                                onClick={() => setReload(!reload)} />
+
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell>Appoinment Status</TableCell>
-                                    <TableCell>Assigned To</TableCell>
-                                    <TableCell>Appoinment Date</TableCell>
-                                    <TableCell>Appoinment Time</TableCell>
-                                    <TableCell>Submission Date</TableCell>
-                                    <TableCell>Patient Name</TableCell>
-                                    <TableCell>Email ID</TableCell>
-                                    <TableCell align="right">Mobile Number</TableCell>
+                                    <TableCell style={{ width: "20%" }}>Appoinment Status</TableCell>
+                                    <TableCell style={{ width: "20%" }}>Assigned To</TableCell>
+                                    <TableCell style={{ width: "20%" }}>Appoinment Date</TableCell>
+                                    <TableCell style={{ width: "20%" }}>Appoinment Time</TableCell>
+                                    <TableCell style={{ width: "20%" }}>Submission Date</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

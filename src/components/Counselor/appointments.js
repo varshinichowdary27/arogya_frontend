@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getPatientList, getUserInfo } from '../../services/loginAPI';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import { Alert, Chip, CircularProgress, Snackbar } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Tooltip } from '@material-ui/core';
 import moment from 'moment';
@@ -43,7 +43,9 @@ function Row(props) {
                             size="small"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                        {open ? 
+                                <Chip color="primary" icon={<KeyboardArrowUpIcon />} label="Collapse" onClick={() => setOpen(!open)}/>
+                                :  <Chip color="primary" icon={<KeyboardArrowDownIcon />} label="Assessment" onClick={() => setOpen(!open)}/>}
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -61,7 +63,7 @@ function Row(props) {
                             size="small"
                             onClick={() => setDoctorOpen(true)}
                         >
-                            <AddCircleIcon color="primary"></AddCircleIcon>
+                              <Chip color="primary" icon={<AddCircleIcon color="primary"></AddCircleIcon>} label="Assign Doctor" onClick={() => setDoctorOpen(true)} />
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -72,7 +74,7 @@ function Row(props) {
                             size="small"
                             onClick={() => setDeleteOpen(true)}
                         >
-                            <DeleteIcon color='error'></DeleteIcon>
+                            <Chip color="error" icon={<DeleteIcon color='error'></DeleteIcon>} label="Delete" onClick={() => setDeleteOpen(true)} />
                         </IconButton>
                     </Tooltip>
                 </TableCell>
@@ -179,21 +181,18 @@ export const Appointments = ({ doctors }) => {
                         <Table aria-label="collapsible table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
+                                  <TableCell style={{ width: "14px" }}>
                                         <Tooltip title="Reload patient List">
-                                            <IconButton
-                                                aria-label="expand row"
+                                        <Chip icon={<ReplayIcon></ReplayIcon>}
+                                                label="Reload" aria-label="expand row"
                                                 size="small"
-                                                onClick={() => setReload(!reload)}
-                                            >
-                                                <ReplayIcon></ReplayIcon>
-                                            </IconButton>
+                                                onClick={() => setReload(!reload)} />
                                         </Tooltip>
                                     </TableCell>
-                                    <TableCell>Appoinment Date</TableCell>
-                                    <TableCell>Appoinment Time</TableCell>
-                                    <TableCell>Patient Name</TableCell>
-                                    <TableCell>Email ID</TableCell>
+                                    <TableCell  style={{ width: "16%" }}>Appoinment Date</TableCell>
+                                    <TableCell  style={{ width: "16%" }}>Appoinment Time</TableCell>
+                                    <TableCell  style={{ width: "16%" }}>Patient Name</TableCell>
+                                    <TableCell   style={{ width: "16%" }}>Email ID</TableCell>
                                     <TableCell align="right">Mobile Number</TableCell>
                                     <TableCell style={{ width: "90px" }} size='small' align="center">Assign Doctor</TableCell>
                                     <TableCell style={{ width: "124px" }} size='small' align="center">Delete Assesement</TableCell>
