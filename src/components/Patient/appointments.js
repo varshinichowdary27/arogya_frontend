@@ -109,7 +109,7 @@ const dataMapper = ({ appointment_id, status,username,
         id: appointment_id,
         status: status ? status: "-",
         assignedTo: username ? username : "-",
-        submissionDate: appointment_start_time !== null? new moment(appointment_creation_date).format('YYYY-MM-DD') : "-",
+        submissionDate: appointment_creation_date !== null? new moment(appointment_creation_date).format('YYYY-MM-DD') : "-",
         questions_list: question_answers.questions_list
     };
 }
@@ -121,7 +121,7 @@ const comparotor =
     (a,b) => new moment(a).format(dateTimeFormat) - new moment(b).format(dateTimeFormat);
 
 
-export const Appointments = () => {
+export const Appointments = ({refresh}) => {
 
     const [patientList, setPatientList] = React.useState([]);
     const [reload, setReload] = React.useState(false);
@@ -157,7 +157,7 @@ export const Appointments = () => {
                                         <Chip icon={<ReplayIcon></ReplayIcon>}
                                                 label="Reload" aria-label="expand row"
                                                 size="small"
-                                                onClick={() => setReload(!reload)} />
+                                                onClick={() => {setReload(!reload); refresh();}} />
 
                                         </Tooltip>
                                     </TableCell>

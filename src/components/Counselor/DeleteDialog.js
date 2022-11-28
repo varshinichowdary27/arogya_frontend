@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import WarningIcon from '@mui/icons-material/Warning';
-import { appointmentDelete } from '../../services/loginAPI';
+import { appointmentDelete, appointmentUpdate, getUserInfo } from '../../services/loginAPI';
 import { Alert } from '@mui/material';
 
 export const DeleteDialog = ({
@@ -17,14 +17,15 @@ export const DeleteDialog = ({
   const [isLoading, setIsLoading] = React.useState(false);
   const close = () => !isLoading && handleClose();
   const [errMsg, setErrMsg] =React.useState("");
+  const user = getUserInfo();
   const onSubmit = () => {
     setIsLoading(true);
-    appointmentDelete(patientDetails.id)
+    appointmentUpdate(patientDetails.id, {status: user.userType === "counselor" ? 1 : 5})
     .then(()=> {
       setErrMsg("");
       reload();
       close();
-    }, () => {setErrMsg("Unable to Delete Assesement");})
+    }, () => {setErrMsg("Unable to Make Appointment");})
     .finally(() => {
         setIsLoading(false);
       })

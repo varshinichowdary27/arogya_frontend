@@ -29,7 +29,7 @@ export default function PatientHP() {
   let userEmail = user?.email_address;
   //let userEmail = "varshinichowdary4@gmail.com";
 
-  const dataMapper = ({ question_answers, patient: {
+  const dataMapper = ({ question_answers, rejected, patient: {
     lastName,
     emailAddress,
     phoneNumber } }) => {
@@ -37,6 +37,7 @@ export default function PatientHP() {
       lastName,
       emailAddress,
       phoneNumber,
+      rejected,
       questions_list: question_answers.questions_list
     };
   }
@@ -52,7 +53,7 @@ export default function PatientHP() {
         setErrMsg("Unable to fetch  Self-assessment");
         setPatientList([]);
       }).finally(() => setloading(false))
-  }, [reload, userEmail])
+  }, [reload])
 
   return (
     <Box sx={{ width: '500%', typography: 'body1' }}>
@@ -74,7 +75,7 @@ export default function PatientHP() {
           </>
 
         </TabPanel>
-        <TabPanel value="2"><Appointments></Appointments></TabPanel>
+        <TabPanel value="2"><Appointments refresh={() => setReload(!reload)}></Appointments></TabPanel>
       </TabContext>
     </Box>
   );

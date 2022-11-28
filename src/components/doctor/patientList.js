@@ -124,7 +124,7 @@ Row.propTypes = {
     }).isRequired,
 };
 
-const dataMapper = ({ appointment_id, question_answers, patient: {
+const dataMapper = ({ appointment_id, rejected, question_answers, patient: {
     lastName,
     emailAddress,
     phoneNumber,
@@ -133,6 +133,7 @@ const dataMapper = ({ appointment_id, question_answers, patient: {
         lastName,
         emailAddress,
         phoneNumber,
+        rejected,
         id: appointment_id,
         questions_list: question_answers.questions_list
     };
@@ -151,7 +152,7 @@ export const PatientList = () => {
         setErrMsg("");
         getPatientList()
             .then(data => data.details)
-            .then(data => data.filter(patient =>  patient.doctor_id === doctor_id 
+            .then(data => data.filter(patient =>  patient.rejected === false && patient.doctor_id === doctor_id 
             && patient.appointment_start_time == null))
             .then(patientList => patientList.map(patient => dataMapper(patient)))
             .then(patientList => {
@@ -187,7 +188,7 @@ export const PatientList = () => {
                             </TableHead>
                             <TableBody>
                                 {patientList.map((patient, index) => (
-                                    <Row key={index} row={patient} reload={() => { setSuccess(true); setReload(true) }} />
+                                    <Row key={index} row={patient} reload={() => { setSuccess(true); setReload(!reload) }} />
                                 ))}
                             </TableBody>
                         </Table>
