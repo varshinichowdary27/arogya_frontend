@@ -67,9 +67,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
-
 const tableHeader = [
   { label: "User Info",data: "emailAddress"},
   { label: "Account Type",data: "account_type"},
@@ -104,6 +101,9 @@ const classes = useStyles();
 //  const [users, setUsers] = useState(USERS);
   const [errMsg, setErrMsg] = useState("");
   const [accountType, setAccountType] = useState("patient");
+  const [countData,setCountData] = useState([]);
+  const [tableData,setTableData] = useState([]);
+  const [countApp,setCountApp] = useState([]);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -112,17 +112,84 @@ const classes = useStyles();
   const response_users= list_users();
   const stats_data = get_stats_data();
 
-const waitResponse = async () => {
-  let data = await response_users;
-  setlist_users_response(data)
-};
-useEffect( () =>{
-if(list_users_response.length == 0){
-waitResponse();
-}
-},[list_users_response]);
+    const waitResponse = async () => {
+    let data = await response_users;
+    setlist_users_response(data)
+    };
+    useEffect( () =>{
+    if(list_users_response.length == 0){
+    waitResponse();
+    }
+    },[list_users_response]);
+    const waitGraphdata = async () =>{
+
+    }
+    useEffect(() =>{
+    if(countData.length == 0 || countApp.length == 0 || tableData.length == 0){
+    get_stats_data()
+        .then((data) => {
+       console.log(data);
+       const count_add = {
+
+           labels: ['Doctor', 'Patient', 'Counselor'],
+           datasets: [
+             {
+               label: '# of Users',
+               data: [data.users_count.doctor_count, data.users_count.patient_count, data.users_count.counsellor_count],
+               backgroundColor: [
+                 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+
+               ],
+               borderColor: [
+                 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+
+               ],
+               borderWidth: 1,
+             },
+           ],
+         };
+          const count_app = {
+
+                 labels: ['Doctor', 'Counsellor'],
+                 datasets: [
+                   {
+                     label: '# of Appointments',
+                     data: [data.patient_with_doctor_assigned, data.patient_with_counsellor_assigned],
+                     backgroundColor: [
+                       'rgba(255, 99, 132, 0.2)',
+                       'rgba(54, 162, 235, 0.2)',
 
 
+                     ],
+                     borderColor: [
+                       'rgba(255, 99, 132, 1)',
+                       'rgba(54, 162, 235, 1)'
+
+                     ],
+                     borderWidth: 1,
+                   },
+                 ],
+               };
+               const table_values = [
+               {"s":"Self Assessment Questionnaires Filled",'c':data.self_assessment_filled_count},
+               {"s":"Doctor Appointments",'c':data.patient_with_doctor_assigned},
+               {"s":"Counsellor Appointments",'c':data.patient_with_counsellor_assigned},
+               {"s":"Number of Registered Doctors",'c':data.users_count.doctor_count},
+               {"s":"Number of Registered Counsellors",'c':data.users_count.counsellor_count},
+               {"s":"Number of Registered Patients",'c':data.users_count.patient_count}
+               ]
+
+               setTableData(table_values);
+         setCountData(count_add);
+       setCountApp(count_app);
+});
+
+    }
+    },[countData,countApp,tableData])
    const handleAccountChange = (event) => {
           setAccountType(event.target.value);
       }
@@ -132,44 +199,11 @@ waitResponse();
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
- const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+
 
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
-
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
 
 
 
@@ -224,7 +258,7 @@ waitResponse();
                     title="Number of Registrations"
             />
             <div>
-                <Doughnut data={data} options={{ maintainAspectRatio: false }} />
+              {countData!= 0?  <Doughnut data={countData} options={{ maintainAspectRatio: false }} />:null}
             </div>
          </Card>
       </Grid>
@@ -234,7 +268,10 @@ waitResponse();
              title="Number of Appointments"
          />
          <div style ={{height:"50%"}}>
-         <Doughnut data={data} options={{ maintainAspectRatio: false }} />
+         {
+         countApp.length!= 0 ?<Doughnut data={countApp} options={{ maintainAspectRatio: false }} />:null}
+
+
          </div>
          </Card>
       </Grid>
@@ -243,37 +280,30 @@ waitResponse();
          <Grid item xs={12}>
          <Card variant="outlined" sx={{ maxWidth: 345 }}>
                   <CardHeader
-                      title="Number of Appointments"
+                      title="Summary Statistics"
                   />
+                  {tableData.length != 0?
                   <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                           <TableHead>
-                            <TableRow>
-                              <TableCell>Dessert (100g serving)</TableCell>
-                              <TableCell align="right">Calories</TableCell>
-                              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                              <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                            </TableRow>
+
                           </TableHead>
                           <TableBody>
-                            {rows.map((row) => (
+                            {tableData.map((row) => (
                               <TableRow
-                                key={row.name}
+                                key={row.s}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                               >
                                 <TableCell component="th" scope="row">
-                                  {row.name}
+                                  {row.s}
                                 </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                                <TableCell align="right">{row.protein}</TableCell>
+                                <TableCell align="right">{row.c}</TableCell>
+
                               </TableRow>
                             ))}
                           </TableBody>
                         </Table>
-                      </TableContainer>
+                      </TableContainer>:null}
          </Card>
          </Grid>
     </Grid>
@@ -284,7 +314,26 @@ waitResponse();
 <TableContainer component={Paper} className={classes.tableContainer}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
+             <TableCell colSpan={12}>
+                                            <Grid container>
+                                            <Grid item lg={8} ></Grid>
+                                              <Grid item lg={4} className={classes.center}>
+                                                <Typography>
+                                                  <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={handleOpen}
+                                                    className={classes.button}
+                                                    startIcon={<AddIcon />}
+                                                  >
+                                                    Add Account
+                                                  </Button>
+                                                </Typography>
+                                              </Grid>
+                                            </Grid>
+                                          </TableCell>
           <TableRow>
+
             {tableHeader.map((cell) => (
               <TableCell key={cell.data} className={classes.tableHeaderCell}>
                 {cell.label}
@@ -296,7 +345,7 @@ waitResponse();
 
           {list_users_response.map((row, i) => (
 
-            <TableRow key={row.id}>
+            <TableRow key={i}>
               <TableCell>
                 <Grid container>
                   <Grid item lg={2}>
@@ -343,26 +392,7 @@ waitResponse();
           ))}
         </TableBody>
         <TableFooter>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <Grid container>
 
-                <Grid item lg={6} className={classes.center}>
-                  <Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleOpen}
-                      className={classes.button}
-                      startIcon={<AddIcon />}
-                    >
-                      Add Account
-                    </Button>
-                  </Typography>
-                </Grid>
-              </Grid>
-            </TableCell>
-          </TableRow>
         </TableFooter>
 
       </Table>
