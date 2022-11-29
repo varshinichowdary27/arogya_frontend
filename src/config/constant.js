@@ -9,5 +9,12 @@ export const URLS = {
     get_appointments: '/get_appointments',
     delete_assesment: '/deleteAssement/',
     list_doctor: '/doctors/',
-    changeAppointment: '/modify_appointment/'
+    changeAppointment: '/modify_appointment/',
+    list_counselor: '/counselors/',
+    list_patients:'/patients/',
+    delete_patient: '/patient?email_address=',
+    delete_doctor:'/doctor?email_address=',
+    delete_counsellor:'/counselor?email_address=',
+    report: '/report'
+
 }

@@ -149,9 +149,9 @@ export const getDoctor = () => axios.get(URLS.list_doctor)
 );
 export const list_users = () =>
 Promise.all([
-	fetch('https://arogya-spm.herokuapp.com/v1/doctors'),
-	fetch('https://arogya-spm.herokuapp.com/v1/counselors'),
-	fetch('https://arogya-spm.herokuapp.com/v1/patients')
+	fetch(URLS.list_doctor),
+	fetch(URLS.list_counselor),
+	fetch(URLS.patients)
 ]).then(function (responses) {
 	// Get a JSON object from each of the responses
 
@@ -186,11 +186,11 @@ Promise.all([
 export const perfomDelete =(row) =>{
 let url ='';
 if(row.account_type == 'Patient'){
-url = "https://arogya-spm.herokuapp.com/v1/patient?email_address="+row.emailAddress;
+url = URLS.delete_patient +row.emailAddress;
 }else if(row.account_type == 'Doctor'){
-url = "https://arogya-spm.herokuapp.com/v1/doctor?email_address="+row.emailAddress;
+url = URLS.delete_doctor +row.emailAddress;
 }else{
-url = "https://arogya-spm.herokuapp.com/v1/counselor?email_address="+row.emailAddress;
+url = URLS.delete_counsellor +row.emailAddress;
 }
 return axios.delete(url).then(
     auth => {
@@ -204,7 +204,7 @@ return axios.delete(url).then(
 
 }
 
-export const get_stats_data = () => axios.get("https://arogya-spm.herokuapp.com/v1/report")
+export const get_stats_data = () => axios.get(URLS.report)
                                .then(
                                  auth => {
 
