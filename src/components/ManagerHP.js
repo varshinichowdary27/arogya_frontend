@@ -6,7 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import {Card,CardHeader,Grid,Avatar,Typography,TableFooter,Button,Modal,TextField,FormHelperText,InputLabel,Select,MenuItem} from '@material-ui/core'
+import {Card,CardHeader,Snackbar,Grid,Avatar,Typography,TableFooter,Button,Modal,TextField,FormHelperText,InputLabel,Select,MenuItem} from '@material-ui/core'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -20,7 +20,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import * as Yup from 'yup'
 import "yup-phone";
-import { signUp } from '../services/loginAPI';
+import { addUser } from '../services/loginAPI';
 import { Alert } from '@mui/material';
 import FormControl from '@material-ui/core/FormControl';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
@@ -107,18 +107,32 @@ const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [snackOpen, setSnackOpen] = React.useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
   const[list_users_response,setlist_users_response] = useState([]);
+
+  //Snack Bar functions
+  const handleSnackClick = () => {
+       setSnackOpen(true);
+     };
+    const handleSnackClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
   //API Call
-  const response_users= list_users();
+
   const stats_data = get_stats_data();
 
-    const waitResponse = async () => {
-    let data = await response_users;
-    setlist_users_response(data)
-    };
     useEffect( () =>{
     if(list_users_response.length == 0){
-    waitResponse();
+    list_users()
+            .then((data) =>{
+            setlist_users_response(data)
+            });
     }
     },[list_users_response]);
     const waitGraphdata = async () =>{
@@ -207,20 +221,22 @@ const classes = useStyles();
 
 
 
-  const deleteItem = async(index) => {
+  const deleteItem = (index) => {
 
-    let res = perfomDelete(index);
-    let status = await res;
+    perfomDelete(index)
+    .then(data =>{
     setlist_users_response([]);
-
-
+    setSnackOpen(true);
+     setSnackMessage("User Deleted Successfully");
+    })
+//    let status = await res;
 
 //    setUsers(newUsers);
   };
    const onSubmit = (values, props) => {
           //TODO send user type and other information
           console.log("entered");
-          signUp({
+          addUser({
               ...values, age: 18, last_name: values.name
               , gender: "male", userType: accountType
           })
@@ -228,15 +244,18 @@ const classes = useStyles();
                   console.log(data);
                   if (data.errors) {
                       setErrMsg(data.errors[0]);
+                      setSnackOpen(true);
+                      setSnackMessage("Error Adding User");
                   } else {
 
-                      console.log(values);
-                      props.resetForm();
-                      setErrMsg("");
+                      setlist_users_response([]);
+                      setSnackOpen(true);
+                      setSnackMessage("User Added Successfully");
+                      handleClose();
                   }
               },
                   (error) => {
-                      setErrMsg("Unable to regiester")
+                      setErrMsg("Unable to Add User")
                   }).finally(() => props.setSubmitting(false));
       }
   return (
@@ -471,6 +490,13 @@ const classes = useStyles();
                                     </Grid>
 
           </Modal>
+            <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose}    anchorOrigin={{vertical: 'top',horizontal: 'center'}}>
+                         <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+                          {snackMessage}
+                         </Alert>
+                       </Snackbar>
         </Box>
+
+
   );
 }

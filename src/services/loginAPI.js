@@ -55,7 +55,33 @@ export const signUp = (userData) => {
   );
 
 }
+export const addUser = (userData) => {
+  let register_url = URLS.register_patient;
+  if (userData.userType === 'patient') {
+    register_url = URLS.register_patient;
+  }
+  if (userData.userType === 'counselor') {
+    register_url = URLS.register_counselor;
+  }
+  if (userData.userType === 'manager') {
+    register_url = URLS.register_manager;
+  }
+  if (userData.userType === 'doctor') {
+    register_url = URLS.register_doctor;
+  }
+  return axios.post(register_url, userData).then(
+    auth => {
+      if (auth.data.errors === undefined) {
+//        sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({ ...userData }));
+      }
+      else {
+        return auth.data
+      }
+      return auth.data;
+    }
+  );
 
+}
 
 export const logOut = () => {
   sessionStorage.removeItem("AUTH_TOKEN");
@@ -158,33 +184,24 @@ Promise.all([
 });
 
 export const perfomDelete =(row) =>{
+let url ='';
 if(row.account_type == 'Patient'){
-axios.delete("https://arogya-spm.herokuapp.com/v1/patient?email_address="+row.emailAddress)
-      .then(res => {
-        console.log(res);
-
-
-      })
-
+url = "https://arogya-spm.herokuapp.com/v1/patient?email_address="+row.emailAddress;
+}else if(row.account_type == 'Doctor'){
+url = "https://arogya-spm.herokuapp.com/v1/doctor?email_address="+row.emailAddress;
+}else{
+url = "https://arogya-spm.herokuapp.com/v1/counselor?email_address="+row.emailAddress;
 }
-if(row.account_type == 'Doctor'){
+return axios.delete(url).then(
+    auth => {
+      if (auth.data.errors === undefined) {
+        return auth.data
+      } else {
+        return auth.data
+      }
+      return auth.data;
+    })
 
-axios.delete("https://arogya-spm.herokuapp.com/v1/doctor?email_address="+row.emailAddress)
-      .then(res => {
-        console.log(res);
-
-
-      })
-}
-if(row.account_type == 'Counselor'){
-axios.delete("https://arogya-spm.herokuapp.com/v1/counselor?email_address="+row.emailAddress)
-      .then(res => {
-        console.log(res);
-
-
-      })
-
-}
 }
 
 export const get_stats_data = () => axios.get("https://arogya-spm.herokuapp.com/v1/report")
