@@ -1,4 +1,4 @@
-export const BASE_ULR = 'https://arogya-spm.herokuapp.com/v1';
+export const BASE_ULR = 'http://localhost:8080/v1';
 export const URLS = {
     login: '/login',
     register_patient: '/register_patient',
@@ -8,10 +8,10 @@ export const URLS = {
     register_appointment: '/register_appointment',
     get_appointments: '/get_appointments',
     delete_assesment: '/deleteAssement/',
-    list_doctor: '/doctors/',
+    list_doctor: '/doctors',
     changeAppointment: '/modify_appointment/',
-    list_counselor: '/counselors/',
-    list_patients:'/patients/',
+    list_counselor: '/counselors',
+    list_patients:'/patients',
     delete_patient: '/patient?email_address=',
     delete_doctor:'/doctor?email_address=',
     delete_counsellor:'/counselor?email_address=',

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URLS } from '../config/constant';
+import { URLS,BASE_ULR } from '../config/constant';
 export const login = ({ email, password, userType }) => axios.get(URLS.login, {
   params: {
     email,
@@ -148,18 +148,23 @@ export const getDoctor = () => axios.get(URLS.list_doctor)
   }
 );
 export const list_users = () =>
+
 Promise.all([
-	fetch(URLS.list_doctor),
-	fetch(URLS.list_counselor),
-	fetch(URLS.patients)
+	fetch( BASE_ULR + URLS.list_doctor),
+	fetch(BASE_ULR + URLS.list_counselor),
+	fetch(BASE_ULR + URLS.list_patients)
+
 ]).then(function (responses) {
 	// Get a JSON object from each of the responses
-
+ 
 	return Promise.all(responses.map(function (response) {
-
+   
 		return response.json()
 	}));
 }).then(function (data) {
+  console.log(data);
+ 
+
 	// Log the data to the console
 	// You would do something with both sets of data here
     let merged_data;
@@ -186,11 +191,11 @@ Promise.all([
 export const perfomDelete =(row) =>{
 let url ='';
 if(row.account_type == 'Patient'){
-url = URLS.delete_patient +row.emailAddress;
+url =  URLS.delete_patient +row.emailAddress;
 }else if(row.account_type == 'Doctor'){
 url = URLS.delete_doctor +row.emailAddress;
 }else{
-url = URLS.delete_counsellor +row.emailAddress;
+url =  URLS.delete_counsellor +row.emailAddress;
 }
 return axios.delete(url).then(
     auth => {
@@ -204,7 +209,7 @@ return axios.delete(url).then(
 
 }
 
-export const get_stats_data = () => axios.get(URLS.report)
+export const get_stats_data = () => axios.get( URLS.report)
                                .then(
                                  auth => {
 
