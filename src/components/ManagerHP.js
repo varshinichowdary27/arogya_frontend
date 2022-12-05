@@ -135,9 +135,7 @@ const classes = useStyles();
             });
     }
     },[list_users_response]);
-    const waitGraphdata = async () =>{
-
-    }
+   
     useEffect(() =>{
     if(countData.length == 0 || countApp.length == 0 || tableData.length == 0){
     get_stats_data()
@@ -260,243 +258,247 @@ const classes = useStyles();
       }
   return (
 
-    <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="Statistics" value="1" />
-                <Tab label="Manage Accounts" value="2" />
+    <><Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Statistics" value="1" />
+            <Tab label="Manage Accounts" value="2" />
 
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-<Grid container spacing={2}>
-      <Grid item xs={6}>
-         <Card variant="outlined" sx={{ maxWidth: 345 }}>
-             <CardHeader
-                    title="Number of Registrations"
-            />
-            <div>
-              {countData!= 0?  <Doughnut data={countData} options={{ maintainAspectRatio: false }} />:null}
-            </div>
-         </Card>
-      </Grid>
-      <Grid item xs={6}>
-        <Card variant="outlined" sx={{ maxWidth: 345 }} >
-         <CardHeader
-             title="Number of Appointments"
-         />
-         <div style ={{height:"50%"}}>
-         {
-         countApp.length!= 0 ?<Doughnut data={countApp} options={{ maintainAspectRatio: false }} />:null}
-
-
-         </div>
-         </Card>
-      </Grid>
-   </Grid>
-<Grid container spacing={2}>
-         <Grid item xs={12}>
-         <Card variant="outlined" sx={{ maxWidth: 345 }}>
-                  <CardHeader
-                      title="Summary Statistics"
-                  />
-                  {tableData.length != 0?
-                  <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                          <TableHead>
-
-                          </TableHead>
-                          <TableBody>
-                            {tableData.map((row) => (
-                              <TableRow
-                                key={row.s}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {row.s}
-                                </TableCell>
-                                <TableCell align="right">{row.c}</TableCell>
-
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>:null}
-         </Card>
-         </Grid>
-    </Grid>
-
-            </TabPanel>
-            <TabPanel value="2">
-
-<TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-             <TableCell colSpan={12}>
-                                            <Grid container>
-                                            <Grid item lg={8} ></Grid>
-                                              <Grid item lg={4} className={classes.center}>
-                                                <Typography>
-                                                  <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleOpen}
-                                                    className={classes.button}
-                                                    startIcon={<AddIcon />}
-                                                  >
-                                                    Add Account
-                                                  </Button>
-                                                </Typography>
-                                              </Grid>
-                                            </Grid>
-                                          </TableCell>
-          <TableRow>
-
-            {tableHeader.map((cell) => (
-              <TableCell key={cell.data} className={classes.tableHeaderCell}>
-                {cell.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-
-          {list_users_response.map((row, i) => (
-
-            <TableRow key={i}>
-              <TableCell>
-                <Grid container>
-                  <Grid item lg={2}>
-                    <Avatar alt={row.lastName} src="." className={classes.avatar} />
-                  </Grid>
-                  <Grid item lg={10}>
-                    <Typography className={classes.name}>{row.lastName}</Typography>
-                    <Typography color="textSecondary" variant="body2">
-                      {row.emailAddress}
-                    </Typography>
-                    <Typography color="textSecondary" variant="body2">
-                      {row.phoneNumber}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Typography color="primary" variant="subtitle2">
-                  {" "}
-                  {row.account_type}
-                </Typography>
-
-
-              </TableCell>
-              <TableCell>{row.registrationNumber}</TableCell>
-              <TableCell>
-                <Grid container>
-
-                  <Grid item lg={3}>
-
-                    <Typography>
-                      <DeleteIcon
-                        color="secondary"
-                        onClick={deleteItem.bind(this, row)}
-                        className={classes.hover}
-                      />
-                    </Typography>
-
-                  </Grid>
-
-                </Grid>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-
-        </TableFooter>
-
-      </Table>
-    </TableContainer>
-
-            </TabPanel>
-
-          </TabContext>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            style ={{marginTop:'150px'}}
-          >
-            <Grid>
-                      <Paper style={paperStyle} elevation={0}>
-                          <Grid align='center'>
-                              <Avatar style={avatarStyle}>
-                                  <AddCircleOutlineOutlinedIcon />
-                              </Avatar>
-                              <h2 style={headerStyle}>Add Account</h2>
-                              <Typography variant='caption' gutterBottom>Please fill this form to add an account !</Typography>
-                          </Grid>
-             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-                                {(props) => (
-                                    <Form>
-                                        {errMsg !== ""  && <Alert severity="error">{errMsg}</Alert>}
-                                        <Field required as={TextField} fullWidth name="name" label='Name'
-                                            placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
-                                        <Field required as={TextField} fullWidth name="email_address" label='Email'
-                                            placeholder="Enter your email" helperText={<ErrorMessage name="email_address" />} />
-                                        <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
-                                        <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
-                                            placeholder="Enter your phone number" helperText={<ErrorMessage name="phone_number" />} />
-                                        <FormControl style={{
-                                            width: '100%',
-                                            padding: '12px'
-                                        }}>
-                                            <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                value={accountType}
-                                                label="accountType"
-                                                onChange={handleAccountChange}
-                                            >
-                                                <MenuItem value='patient'>Patient</MenuItem>
-                                                <MenuItem value='doctor'>Doctor</MenuItem>
-                                                <MenuItem value='counselor'>Counselor</MenuItem>
-                                                <MenuItem value='manager'>Manager</MenuItem>
-                                            </Select>
-                                        </FormControl>
-
-                                        {(accountType === 'doctor' || accountType === 'counselor') && <>
-                                            <Field as={TextField} required fullWidth name='registration_number'
-                                                label='Registration Number' placeholder="Enter your Registration number"
-                                            />
-                                            <FormHelperText><ErrorMessage name="registration_number" /></FormHelperText>
-                                        </>
-                                        }
-                                        <Field as={TextField} required fullWidth name='password' type="password"
-                                            label='Password' placeholder="Enter your password"
-                                            helperText={<ErrorMessage name="password" />} />
-                                        <Field as={TextField} required fullWidth name="confirmPassword" type="password"
-                                            label='Confirm Password' placeholder="Confirm your password"
-                                            helperText={<ErrorMessage name="confirmPassword" />} />
-                                        <Button style={{ margin: '   15px' }} type='submit' variant='contained' disabled={props.isSubmitting}
-                                            color='primary'>{props.isSubmitting ? "Loading" : "Add Account"}</Button>
-                                            <Button style={{ margin: '   15px' }} onClick={handleClose} variant='contained' disabled={props.isSubmitting}
-                                                                                        color='secondary'>{"cancel"}</Button>
-                                    </Form>
-                                )}
-                            </Formik>
-                            </Paper>
-                                    </Grid>
-
-          </Modal>
-            <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose}    anchorOrigin={{vertical: 'top',horizontal: 'center'}}>
-                         <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
-                          {snackMessage}
-                         </Alert>
-                       </Snackbar>
+          </TabList>
         </Box>
+        <TabPanel value="1">
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Card variant="outlined" sx={{ maxWidth: 345 }}>
+                <CardHeader
+                  title="Number of Registrations" />
+                <div>
+                  {countData != 0 ? <Doughnut data={countData} options={{ maintainAspectRatio: false }} /> : null}
+                </div>
+              </Card>
+            </Grid>
+            <Grid item xs={6}>
+              <Card variant="outlined" sx={{ maxWidth: 345 }}>
+                <CardHeader
+                  title="Number of Appointments" />
+              
+                  < div style ={{ height: "50%" }}>
+                {countApp.length != 0 ? 
+                <>
+                {(countApp.datasets[0].data[0]== 0 && countApp.datasets[0].data[1] == 0)? 
+                  <div style={{height:'150px'}}><span>No Active Appointments</span></div>: <Doughnut data={countApp} options={{ maintainAspectRatio: false }} />}
+                </>
+                : null}
 
+
+              </div>
+                
+            </Card>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card variant="outlined" sx={{ maxWidth: 345 }}>
+              <CardHeader
+                title="Summary Statistics" />
+              {tableData.length != 0 ?
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+
+                    </TableHead>
+                    <TableBody>
+                      {tableData.map((row) => (
+                        <TableRow
+                          key={row.s}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {row.s}
+                          </TableCell>
+                          <TableCell align="right">{row.c}</TableCell>
+
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer> : null}
+            </Card>
+          </Grid>
+        </Grid>
+
+      </TabPanel>
+      <TabPanel value="2">
+
+        <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table style ={{width:"100%"}}className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableCell colSpan={12}>
+                <Grid container>
+                  <Grid item lg={8}></Grid>
+                  <Grid item lg={4} className={classes.center}>
+                    <Typography>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleOpen}
+                        className={classes.button}
+                        startIcon={<AddIcon />}
+                      >
+                        Add Account
+                      </Button>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+              <TableRow>
+
+                {tableHeader.map((cell) => (
+                  <TableCell align="center" key={cell.data} className={classes.tableHeaderCell}>
+                    {cell.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+
+              {list_users_response.map((row, i) => (
+
+                <TableRow key={i}>
+                  <TableCell align="center">
+                    <Grid container>
+                      <Grid item lg={2}>
+                        <Avatar alt={row.lastName} src="." className={classes.avatar} />
+                      </Grid>
+                      <Grid item lg={10}>
+                        <Typography className={classes.name}>{row.lastName}</Typography>
+                        <Typography color="textSecondary" variant="body2">
+                          {row.emailAddress}
+                        </Typography>
+                        <Typography color="textSecondary" variant="body2">
+                          {row.phoneNumber}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography color="primary" variant="subtitle2">
+                      {" "}
+                      {row.account_type}
+                    </Typography>
+
+
+                  </TableCell>
+                  <TableCell align="center">{row.registrationNumber}</TableCell>
+                  <TableCell align="center"    >
+                    <Grid container>
+                    <Grid item lg={4}></Grid>
+                      <Grid item lg={3}>
+
+                        <Typography>
+                        
+                          <DeleteIcon
+                            color="secondary"
+                            textAlign ="center"
+                            
+                            style={{verticalAlign:"middle"}}
+
+                            onClick={deleteItem.bind(this, row)}
+                            className={classes.hover} />
+                        </Typography>
+
+                      </Grid>
+
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+
+            </TableFooter>
+
+          </Table>
+        </TableContainer>
+
+      </TabPanel>
+
+    </TabContext><Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      style={{ marginTop: '150px' }}
+    >
+        <Grid>
+          <Paper style={paperStyle} elevation={0}>
+            <Grid align='center'>
+              <Avatar style={avatarStyle}>
+                <AddCircleOutlineOutlinedIcon />
+              </Avatar>
+              <h2 style={headerStyle}>Add Account</h2>
+              <Typography variant='caption' gutterBottom>Please fill this form to add an account !</Typography>
+            </Grid>
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+              {(props) => (
+                <Form>
+                  {errMsg !== "" && <Alert severity="error">{errMsg}</Alert>}
+                  <Field required as={TextField} fullWidth name="name" label='Name'
+                    placeholder="Enter your name" helperText={<ErrorMessage name="name" />} />
+                  <Field required as={TextField} fullWidth name="email_address" label='Email'
+                    placeholder="Enter your email" helperText={<ErrorMessage name="email_address" />} />
+                  <FormHelperText><ErrorMessage name="gender" /></FormHelperText>
+                  <Field as={TextField} required fullWidth name="phone_number" label='Phone Number'
+                    placeholder="Enter your phone number" helperText={<ErrorMessage name="phone_number" />} />
+                  <FormControl style={{
+                    width: '100%',
+                    padding: '12px'
+                  }}>
+                    <InputLabel id="demo-simple-select-label">Account Type</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={accountType}
+                      label="accountType"
+                      onChange={handleAccountChange}
+                    >
+                      <MenuItem value='patient'>Patient</MenuItem>
+                      <MenuItem value='doctor'>Doctor</MenuItem>
+                      <MenuItem value='counselor'>Counselor</MenuItem>
+                      <MenuItem value='manager'>Manager</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  {(accountType === 'doctor' || accountType === 'counselor') && <>
+                    <Field as={TextField} required fullWidth name='registration_number'
+                      label='Registration Number' placeholder="Enter your Registration number" />
+                    <FormHelperText><ErrorMessage name="registration_number" /></FormHelperText>
+                  </>}
+                  <Field as={TextField} required fullWidth name='password' type="password"
+                    label='Password' placeholder="Enter your password"
+                    helperText={<ErrorMessage name="password" />} />
+                  <Field as={TextField} required fullWidth name="confirmPassword" type="password"
+                    label='Confirm Password' placeholder="Confirm your password"
+                    helperText={<ErrorMessage name="confirmPassword" />} />
+                  <Button style={{ margin: '   15px' }} type='submit' variant='contained' disabled={props.isSubmitting}
+                    color='primary'>{props.isSubmitting ? "Loading" : "Add Account"}</Button>
+                  <Button style={{ margin: '   15px' }} onClick={handleClose} variant='contained' disabled={props.isSubmitting}
+                    color='secondary'>{"cancel"}</Button>
+                </Form>
+              )}
+            </Formik>
+          </Paper>
+        </Grid>
+
+      </Modal><Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+          {snackMessage}
+        </Alert>
+      </Snackbar>
+
+        </Box>
+</>
 
   );
 }
