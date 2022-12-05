@@ -26,7 +26,7 @@ export const AppointmentDialog = ({
   const id = getUserInfo().id
   const onSubmit = () => {
     setIsLoading(true);
-    const patient = { appointment_start_time: value };
+    const patient = { appointment_start_time: value, status:  isConsullor ? 2 : 3};
     patient[isConsullor ? 'counsellor_id' : 'doctor_id' ] = id;
     appointmentUpdate(patientDetails.id, patient)
     .then(()=> {
