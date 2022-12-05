@@ -46,7 +46,7 @@ export const signUp = (userData) => {
   return axios.post(register_url, userData).then(
     auth => {
       if (auth.data.errors === undefined) {
-        sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({ ...userData }));
+        sessionStorage.setItem("AUTH_TOKEN", JSON.stringify({ ...auth.data.data, userType: userData.userType }));
       } else {
         return auth.data
       }
